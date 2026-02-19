@@ -1,0 +1,7 @@
+{
+  "name": "Ankan ❤️ Samapika Wedding Management System",
+  "description": "A comprehensive wedding management system featuring guest lists, live check-ins, real-time RSVP updates, and an elegant public invitation page with glassmorphism design.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
