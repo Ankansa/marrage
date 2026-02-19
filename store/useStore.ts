@@ -1,7 +1,6 @@
 
 import { create } from 'zustand';
 import { Invitee, RSVPStatus, Tag, FoodPreference, UserRole, WeddingSettings, DashboardStats } from '../types';
-
 interface AppState {
   isAuthenticated: boolean;
   user: { username: string; role: UserRole } | null;
@@ -28,13 +27,14 @@ export const useStore = create<AppState>((set, get) => ({
   settings: {
     brideName: 'Samapika',
     groomName: 'Ankan',
-    date: '2025-12-12',
+    date: '2026-05-05',
     time: '18:00',
-    venue: 'Royal Orchid Gardens, Kolkata',
-    venueMapUrl: 'https://maps.google.com',
+    venue: 'Sarkar Bari Hamirhati, West Bengal',
+    venueMapUrl: 'https://maps.app.goo.gl/KXdbKTfrzvCwh3cNA',
+    // Use public folder for local images or external URLs for hosted images
     contacts: [
-      { name: 'Rahul', phone: '+91 9876543210', role: 'Groom\'s Brother', photo: 'https://picsum.photos/seed/rahul/100/100' },
-      { name: 'Sneha', phone: '+91 9876543211', role: 'Bride\'s Sister', photo: 'https://picsum.photos/seed/sneha/100/100' }
+      { name: 'Rini', phone: '+91 8145110379', role: 'Groom\'s Sister', photo: 'public\\IMG20240601183843.jpg' },
+      { name: 'Riya', phone: '+91 7076990491', role: 'Groom\'s Sister', photo: 'public\\IMG20240601183835.jpg' }
     ],
     galleryImages: [
       'https://picsum.photos/seed/wedding1/800/600',

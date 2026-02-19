@@ -42,7 +42,7 @@ const App: React.FC = () => {
             />
             <Route 
               path="/" 
-              element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
+              element={isAuthenticated ? <Dashboard /> : <Navigate to="/invite/:slug" />} 
             />
             <Route 
               path="/invitees" 
