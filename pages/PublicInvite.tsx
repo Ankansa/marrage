@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import { Heart, Calendar, Clock, MapPin, Phone, MessageSquare, Check, X, Camera } from 'lucide-react';
+import { Heart, Calendar, Clock, MapPin, Phone, MessageSquare, Check, X, Music, Volume2, VolumeX, Globe, Star, UtensilsCrossed } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { RSVPStatus, FoodPreference } from '../types';
 
@@ -11,6 +11,19 @@ const PublicInvite: React.FC = () => {
   const { settings, addInvitee } = useStore();
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   const [showRsvp, setShowRsvp] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const heroScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
   const [rsvpForm, setRsvpForm] = useState({
     name: '',
     phone: '',
@@ -18,40 +31,82 @@ const PublicInvite: React.FC = () => {
     foodPreference: FoodPreference.NON_VEG,
     message: ''
   });
-  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-  const weddingDate = new Date(`${settings.date}T${settings.time}`).getTime();
+    const weddingDate = new Date(`${settings.date}T${settings.time}`).getTime();
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+      if (distance < 0) {
+        clearInterval(timer);
+        return;
+      }
+      setTimeLeft({
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        mins: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        secs: Math.floor((distance % (1000 * 60)) / 1000)
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [settings.date, settings.time]);
 
-  const timer = setInterval(() => {
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
+  const toggleMusic = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(e => console.log("Audio play blocked"));
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
-    const isPast = distance < 0;
-    const absDistance = Math.abs(distance);
-
-    setTimeLeft({
-      days: Math.floor(absDistance / (1000 * 60 * 60 * 24)) * (isPast ? -1 : 1),
-      hours:
-        Math.floor(
-          (absDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        ) * (isPast ? -1 : 1),
-      mins:
-        Math.floor((absDistance % (1000 * 60 * 60)) / (1000 * 60)) *
-        (isPast ? -1 : 1),
-      secs:
-        Math.floor((absDistance % (1000 * 60)) / 1000) *
-        (isPast ? -1 : 1),
-    });
-  }, 1000);
-
-  return () => clearInterval(timer);
-}, [settings.date, settings.time]);
-
+  const rituals = [
+    {
+      name: "Nandimukh",
+      desc: "Pre-wedding ritual seeking blessings from ancestors for a new journey.",
+      time: "11:00 AM",
+      date: "May 3, 2026",
+      place: "Sarkar Bari Hamirhati",
+      icon: "🐚",
+      color: "bg-red-50",
+      accent: "border-red-200"
+    },
+    {
+      name: "Gaye Holud",
+      desc: "Purification and auspicious start with turmeric paste, music, and colorful celebrations.",
+      time: "01:00 PM",
+      date: "May 3, 2026",
+      place: "Sarkar Bari Hamirhati",
+      icon: "🌼",
+      color: "bg-yellow-50",
+      accent: "border-yellow-200"
+    },
+    {
+      name: "Shubho Bibaho",
+      desc: "The sacred union featuring Saat Paak and Sindoor Daan.",
+      time: "07:00 PM",
+      date: "May 3, 2026",
+      place: "Suniti Ceremonial House",
+      icon: "🔥",
+      color: "bg-orange-50",
+      accent: "border-orange-200"
+    },
+    {
+      name: "Preeti Bhoj",
+      desc: "Social gala welcoming the bride's family with legendary Bangali cuisine.",
+      time: "09:00 PM",
+      date: "May 5, 2026",
+      place: "Sarkar Bari Hamirhati",
+      icon: "🥘",
+      color: "bg-amber-50",
+      accent: "border-amber-200"
+    }
+  ];
 
   const handleRsvp = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate API call
     addInvitee({
       ...rsvpForm,
       tag: 'Guest side' as any,
@@ -64,226 +119,384 @@ const PublicInvite: React.FC = () => {
     }, 3000);
   };
 
+  // Generate petals
+  const petals = Array.from({ length: 15 }).map((_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    delay: `${Math.random() * 10}s`,
+    duration: `${8 + Math.random() * 7}s`,
+    size: Math.random() > 0.5 ? '20px' : '12px',
+    color: Math.random() > 0.5 ? '#f59e0b' : '#ef4444' // Marigold or Rose
+  }));
+
   return (
-    <div className="min-h-screen bg-[#fff5f7] relative overflow-x-hidden">
-      {/* Background Slideshow (Mock) */}
-      <div className="fixed inset-0 z-0">
-        <img src={settings.galleryImages[0]} className="w-full h-full object-cover" alt="" />
-        <div className="absolute inset-0 bg-pink-900/40 backdrop-blur-[1px]" />
+    <div ref={containerRef} className="min-h-screen bg-[#fffaf0] relative overflow-x-hidden selection:bg-red-200">
+      
+      {/* Background Audio */}
+      <audio ref={audioRef} loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" />
+      
+      {/* Floating Petals */}
+      {petals.map(p => (
+        <div 
+          key={p.id}
+          className="petal"
+          style={{
+            left: p.left,
+            animationDelay: p.delay,
+            animationDuration: p.duration,
+            width: p.size,
+            height: p.size,
+            backgroundColor: p.color,
+            borderRadius: '50% 0 50% 50%',
+            opacity: 0.6
+          }}
+        />
+      ))}
+
+      {/* Floating Music Button */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        onClick={toggleMusic}
+        className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full crimson-gradient text-white flex items-center justify-center shadow-2xl border-2 border-white/40"
+      >
+        {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
+      </motion.button>
+      
+      {/* Floating Background Alponas */}
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-10">
+        <motion.img 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" 
+          className="absolute -top-20 -left-20 w-96 h-96 grayscale opacity-20" 
+        />
+        <motion.img 
+          animate={{ rotate: -360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" 
+          className="absolute -bottom-20 -right-20 w-80 h-80 grayscale opacity-20" 
+        />
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 max-w-lg mx-auto min-h-screen flex flex-col items-center">
-        
-        {/* Hero Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="h-screen flex flex-col items-center justify-center text-center px-6 text-white"
-        >
-          <div className="w-16 h-16 mb-6 flex items-center justify-center text-pink-300">
-            <Heart size={48} fill="currentColor" className="animate-pulse" />
-          </div>
-          <p className="font-serif italic text-xl mb-4 opacity-90">Together with their families</p>
-          <h1 className="font-serif text-5xl md:text-6xl font-bold leading-tight mb-8">
-            {settings.groomName} <br/> 
-            <span className="font-script text-pink-300 text-7xl inline-block my-4">&</span> <br/> 
-            {settings.brideName}
-          </h1>
-          <p className="uppercase tracking-[0.3em] font-medium text-sm border-y border-white/20 py-4 w-full max-w-[300px]">
-            Save The Date • {new Date(settings.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
+      {/* Hero Section */}
+      <section className="relative h-screen overflow-hidden flex items-center justify-center">
+        <motion.div style={{ scale: heroScale, opacity: heroOpacity }} className="absolute inset-0 z-0">
+          <img 
+            src={settings.galleryImages[0]} 
+            className="w-full h-full object-cover" 
+            alt="Wedding Background" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
+        </motion.div>
 
-          <div className="mt-12 flex gap-4 text-xs font-bold uppercase tracking-widest">
-            {['days', 'hours', 'mins', 'secs'].map(unit => (
-              <div key={unit} className="flex flex-col items-center">
-                <span className="text-3xl font-serif mb-1">{timeLeft[unit as keyof typeof timeLeft]}</span>
-                <span className="opacity-60">{unit}</span>
-              </div>
-            ))}
-          </div>
-
+        <div className="relative z-10 text-center px-6">
           <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="mb-8"
+          >
+             <p className="font-bengali text-2xl text-yellow-400 mb-2 tracking-[0.4em] drop-shadow-md">শুভ বিবাহ</p>
+             <div className="w-24 h-px bg-yellow-400 mx-auto mb-6" />
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="font-serif text-7xl md:text-9xl text-white font-bold leading-tight"
+          >
+            {settings.groomName} <br/> 
+            <span className="font-script gold-text text-8xl md:text-[10rem] block my-6 drop-shadow-lg">&</span>
+            {settings.brideName}
+          </motion.h1>
+
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 1 }}
-            className="absolute bottom-10 animate-bounce"
+            className="mt-12 inline-block px-10 py-4 border-2 border-yellow-400/40 backdrop-blur-md rounded-full text-white tracking-[0.4em] font-medium text-sm"
           >
-            <div className="w-px h-12 bg-white/40 mx-auto" />
-            <span className="text-[10px] tracking-widest uppercase mt-4 block">Scroll Down</span>
+            {new Date(settings.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </motion.div>
+
+          <div className="mt-16 flex justify-center gap-10 text-white">
+            {Object.entries(timeLeft).map(([unit, value], i) => (
+              <motion.div 
+                key={unit}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2 + (i * 0.1) }}
+                className="flex flex-col items-center"
+              >
+                <span className="text-5xl font-serif mb-1 gold-text">{value}</span>
+                <span className="text-[10px] uppercase tracking-[0.3em] opacity-80">{unit}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <motion.div 
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/60 flex flex-col items-center gap-2"
+        >
+          <span className="text-[10px] uppercase tracking-[0.3em]">Explore the Traditions</span>
+          <div className="w-px h-16 bg-gradient-to-b from-yellow-400 to-transparent" />
         </motion.div>
+      </section>
 
-        {/* Details Section */}
-        <section className="w-full bg-white px-8 py-20 rounded-t-[60px] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] space-y-20">
-          <div className="text-center space-y-6">
-            <h2 className="font-serif text-3xl text-pink-800">Wedding Celebration</h2>
-            <p className="text-gray-500 leading-relaxed italic">
-              "Love is patient, love is kind. It does not envy, it does not boast, it is not proud."
-            </p>
+      {/* Welcome Message */}
+      <section className="py-40 px-6 max-w-4xl mx-auto text-center relative z-10">
+        <div className="absolute top-0 left-0 w-32 h-32 opacity-10 grayscale">
+            <img src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" alt="" />
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="space-y-10"
+        >
+          <div className="text-red-700 font-bengali text-4xl mb-4 tracking-widest">স্বাগতম</div>
+          <h2 className="font-serif text-5xl md:text-6xl text-gray-800">You're Cordially Invited</h2>
+          <p className="text-xl md:text-2xl text-gray-600 font-serif italic leading-relaxed max-w-2xl mx-auto">
+            "We are spinning our dreams into reality, and we want you to be part of the thread that binds our love."
+          </p>
+          <div className="flex justify-center gap-4">
+            {[1, 2, 3].map(i => <Star key={i} size={16} className="text-yellow-500" fill="currentColor" />)}
           </div>
+        </motion.div>
+      </section>
 
-          <div className="space-y-8">
-            <div className="flex gap-6 items-start">
-              <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 shrink-0">
-                <Calendar size={20} />
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-800 text-lg">When</h4>
-                <p className="text-gray-500">{new Date(settings.date).toDateString()}</p>
-                <p className="text-gray-500">{settings.time} onwards</p>
-              </div>
-            </div>
-
-            <div className="flex gap-6 items-start">
-              <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-pink-600 shrink-0">
-                <MapPin size={20} />
-              </div>
-              <div>
-                <h4 className="font-bold text-gray-800 text-lg">Where</h4>
-                <p className="text-gray-500 leading-relaxed">{settings.venue}</p>
-                <a href={settings.venueMapUrl} className="text-pink-600 font-bold text-sm underline mt-2 inline-block">View on Maps</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Contacts Panel */}
-          <div className="space-y-6">
-            <h3 className="font-serif text-2xl text-pink-800 text-center">Contact For Any Queries</h3>
-            <div className="grid grid-cols-1 gap-4">
-              {settings.contacts.map((contact, idx) => (
-                <div key={idx} className="glass p-4 rounded-2xl flex items-center justify-between border-pink-100">
-                  <div className="flex items-center gap-3">
-                    <img src={contact.photo} className="w-12 h-12 rounded-full object-cover border-2 border-pink-200" alt="" />
-                    <div>
-                      <p className="font-bold text-gray-800">{contact.name}</p>
-                      <p className="text-xs text-gray-400">{contact.role}</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <a href={`tel:${contact.phone}`} className="p-2 bg-green-100 text-green-600 rounded-xl hover:bg-green-200 transition-colors">
-                      <Phone size={18} />
-                    </a>
-                    <a href={`https://wa.me/${contact.phone.replace(/[^0-9]/g, '')}`} className="p-2 bg-pink-100 text-pink-600 rounded-xl hover:bg-pink-200 transition-colors">
-                      <MessageSquare size={18} />
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="text-center pt-10">
-            <button 
-              onClick={() => setShowRsvp(true)}
-              className="bg-pink-600 text-white px-12 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-pink-200 hover:scale-105 active:scale-95 transition-all"
+      {/* Rituals Timeline */}
+      <section className="py-24 px-4 bg-white relative z-10 overflow-hidden">
+        <div className="absolute inset-0 alpona-bg pointer-events-none" />
+        <h3 className="font-serif text-4xl text-center text-gray-800 mb-20">Rituals of Grace</h3>
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {rituals.map((ritual, idx) => (
+            <motion.div
+              key={ritual.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className={`ritual-card p-10 rounded-[3rem] ${ritual.color} border-2 ${ritual.accent} shadow-xl flex flex-col items-center text-center group`}
             >
-              Confirm Your Presence
-            </button>
-          </div>
+              <div className="text-6xl mb-8 floating group-hover:scale-110 transition-transform">{ritual.icon}</div>
+              <h4 className="font-serif text-2xl text-gray-900 mb-2 font-bold">{ritual.name}</h4>
+              <div className="flex flex-col gap-1 mb-6">
+                <span className="text-[10px] font-bold text-red-600 uppercase tracking-[0.2em]">{ritual.time}</span>
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em]">{ritual.date}</span>
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">{ritual.desc}</p>
+              <div className="mt-auto flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                <MapPin size={12} className="text-red-400" />
+                {ritual.place}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-          <div className="flex justify-center pt-20 pb-10 grayscale opacity-40">
-            <Heart size={24} className="mx-2" />
-            <Heart size={24} className="mx-2" />
-            <Heart size={24} className="mx-2" />
-          </div>
-        </section>
+      {/* Interactive Venue */}
+      <section className="py-40 bg-stone-900 text-white relative z-10 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-yellow-600/10 rounded-full blur-[100px]" />
+        
+        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-10"
+          >
+            <div className="inline-block p-5 bg-white/5 rounded-3xl backdrop-blur-md border border-white/10">
+               <MapPin size={40} className="text-yellow-500" />
+            </div>
+            <h3 className="font-serif text-5xl md:text-6xl">The Grand Venue</h3>
+            <p className="text-2xl text-stone-400 font-serif italic leading-relaxed">
+              {settings.venue}
+            </p>
+            <div className="flex items-center gap-4 text-stone-500">
+               <Clock size={24} className="text-yellow-500" />
+               <span className="text-xl font-medium tracking-wide">{settings.time} Onwards</span>
+            </div>
+            <div className="flex flex-wrap gap-6">
+              <a 
+                href={settings.venueMapUrl} 
+                target="_blank"
+                className="inline-flex items-center gap-4 crimson-gradient text-white px-10 py-5 rounded-2xl font-bold hover:scale-105 transition-all shadow-2xl shadow-red-900/40"
+              >
+                Navigate to Heaven <MapPin size={20} />
+              </a>
+            </div>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="relative h-[550px] rounded-[4rem] overflow-hidden shadow-2xl border-[12px] border-white/5 group"
+          >
+            {settings.venueEmbedHtml ? (
+              <div className="w-full h-full relative">
+                <div 
+                  className="w-full h-full grayscale brightness-90 hover:grayscale-0 transition-all duration-700"
+                  dangerouslySetInnerHTML={{ __html: settings.venueEmbedHtml }} 
+                />
+                <div className="absolute top-6 right-6 bg-black/60 backdrop-blur-xl px-6 py-2 rounded-full flex items-center gap-3 border border-white/10 shadow-2xl">
+                  <Globe size={18} className="text-yellow-400 animate-spin-slow" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white">360° Interactive Experience</span>
+                </div>
+              </div>
+            ) : (
+              <img src="https://images.unsplash.com/photo-1544101496-5f71696e73c2?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover" alt="Venue" />
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Bhoj (Culinary) Section */}
+      <section className="py-32 px-6 bg-white relative z-10 overflow-hidden">
+         <div className="max-w-4xl mx-auto text-center space-y-12">
+            <UtensilsCrossed size={48} className="mx-auto text-red-700 opacity-20" />
+            <h3 className="font-serif text-4xl text-gray-800">A Taste of Tradition</h3>
+            <p className="text-gray-500 font-serif italic text-lg leading-relaxed">
+                Experience a handpicked menu of authentic Bangali delicacies at the Preeti Bhoj, carefully prepared to celebrate our heritage.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {['Macher Matha', 'Basanti Pulao', 'Chingri Malaikari', 'Mishti Doi'].map(dish => (
+                    <div key={dish} className="p-4 rounded-2xl bg-orange-50 text-orange-800 font-bold text-xs uppercase tracking-widest border border-orange-100">
+                        {dish}
+                    </div>
+                ))}
+            </div>
+         </div>
+      </section>
+
+      {/* Gallery */}
+      <section className="py-40 px-4 relative z-10 bg-[#fffaf0]">
+        <h3 className="font-serif text-5xl text-center text-gray-800 mb-20">Love in Every Pixel</h3>
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 max-w-7xl mx-auto space-y-6">
+          {settings.galleryImages.map((img, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.03 }}
+              className="relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white"
+            >
+              <img src={img} className="w-full object-cover" alt="Gallery" />
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* RSVP Sections */}
+      <div className="fixed bottom-8 inset-x-0 px-8 z-[100] md:hidden">
+         <button 
+           onClick={() => setShowRsvp(true)}
+           className="w-full crimson-gradient text-white py-6 rounded-3xl font-bold text-xl shadow-2xl shadow-red-900/40 active:scale-95 transition-transform border-t border-white/20"
+         >
+           I'll Be There!
+         </button>
       </div>
+
+      <section className="py-48 px-6 text-center relative z-10 overflow-hidden bg-white">
+        <div className="absolute inset-0 alpona-bg pointer-events-none" />
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative z-10"
+        >
+          <h2 className="font-serif text-6xl text-gray-900 mb-10">Will You Join Our Joy?</h2>
+          <p className="text-gray-500 mb-16 max-w-xl mx-auto text-xl font-serif italic">
+            Your presence will add an irreplaceable sparkle to our celebrations. Please confirm your arrival below.
+          </p>
+          <button 
+            onClick={() => setShowRsvp(true)}
+            className="hidden md:inline-flex items-center gap-4 crimson-gradient text-white px-16 py-6 rounded-[3rem] font-bold text-2xl shadow-2xl shadow-red-900/30 hover:scale-110 transition-all border-t border-white/20"
+          >
+            Confirm Presence <Heart size={24} fill="currentColor" />
+          </button>
+        </motion.div>
+      </section>
 
       {/* RSVP Modal */}
       <AnimatePresence>
         {showRsvp && (
-          <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-4">
+          <div className="fixed inset-0 z-[120] flex items-end md:items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowRsvp(false)}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              className="absolute inset-0 bg-black/90 backdrop-blur-xl"
             />
             <motion.div
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 100 }}
-              className="relative w-full max-w-md bg-white rounded-t-[40px] md:rounded-[40px] p-8 shadow-2xl"
+              initial={{ opacity: 0, y: 100, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 100, scale: 0.9 }}
+              className="relative w-full max-w-2xl bg-white rounded-t-[4rem] md:rounded-[4rem] p-12 shadow-2xl overflow-hidden border-t-8 border-red-700"
             >
+              <img src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" className="absolute -top-10 -right-10 w-64 h-64 opacity-5 grayscale" />
+              
               {submitted ? (
-                <div className="text-center py-12 space-y-4">
-                  <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto">
-                    <Check size={40} />
-                  </div>
-                  <h3 className="text-2xl font-serif text-gray-800">Thank You!</h3>
-                  <p className="text-gray-500">We have recorded your RSVP. See you there!</p>
+                <div className="text-center py-24 space-y-8">
+                  <motion.div 
+                    initial={{ scale: 0 }} animate={{ scale: 1 }}
+                    className="w-32 h-32 bg-green-100 rounded-full flex items-center justify-center text-green-600 mx-auto shadow-inner"
+                  >
+                    <Check size={64} />
+                  </motion.div>
+                  <h3 className="font-serif text-5xl text-gray-900">অশেষ ধন্যবাদ!</h3>
+                  <p className="text-gray-500 text-xl font-serif italic">We are truly excited to celebrate our union with you.</p>
                 </div>
               ) : (
                 <>
-                  <div className="flex justify-between items-center mb-8">
-                    <h3 className="font-serif text-2xl text-pink-800">RSVP</h3>
-                    <button onClick={() => setShowRsvp(false)} className="text-gray-400">
-                      <X size={24} />
+                  <div className="flex justify-between items-center mb-12">
+                    <div>
+                        <h3 className="font-serif text-4xl text-gray-900">Confirmation</h3>
+                        <p className="text-xs font-bold text-red-600 uppercase tracking-widest mt-1">Join the celebration</p>
+                    </div>
+                    <button onClick={() => setShowRsvp(false)} className="p-3 bg-gray-100 hover:bg-red-50 hover:text-red-600 rounded-full transition-all">
+                      <X size={28} />
                     </button>
                   </div>
-                  <form onSubmit={handleRsvp} className="space-y-5">
-                    <div>
-                      <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Full Name</label>
-                      <input 
-                        required
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-pink-500/20"
-                        placeholder="Your Name"
-                        value={rsvpForm.name}
-                        onChange={e => setRsvpForm({...rsvpForm, name: e.target.value})}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Phone</label>
-                      <input 
-                        required
-                        type="tel"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-pink-500/20"
-                        placeholder="Phone Number"
-                        value={rsvpForm.phone}
-                        onChange={e => setRsvpForm({...rsvpForm, phone: e.target.value})}
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Guest Count</label>
-                        <input 
-                          type="number"
-                          min="1"
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-pink-500/20"
-                          value={rsvpForm.familyCount}
-                          onChange={e => setRsvpForm({...rsvpForm, familyCount: parseInt(e.target.value)})}
-                        />
+                  <form onSubmit={handleRsvp} className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] ml-2">Name of the Guest</label>
+                        <input required className="w-full px-8 py-5 bg-stone-50 border-none rounded-3xl focus:ring-4 focus:ring-red-700/5 transition-all outline-none font-medium" placeholder="Full name" value={rsvpForm.name} onChange={e => setRsvpForm({...rsvpForm, name: e.target.value})} />
                       </div>
-                      <div>
-                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Food Choice</label>
-                        <select 
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-pink-500/20"
-                          value={rsvpForm.foodPreference}
-                          onChange={e => setRsvpForm({...rsvpForm, foodPreference: e.target.value as FoodPreference})}
-                        >
-                          <option value={FoodPreference.VEG}>Veg</option>
-                          <option value={FoodPreference.NON_VEG}>Non-Veg</option>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] ml-2">Contact Number</label>
+                        <input required type="tel" className="w-full px-8 py-5 bg-stone-50 border-none rounded-3xl focus:ring-4 focus:ring-red-700/5 transition-all outline-none font-medium" placeholder="Phone" value={rsvpForm.phone} onChange={e => setRsvpForm({...rsvpForm, phone: e.target.value})} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] ml-2">Total Attending</label>
+                        <select className="w-full px-8 py-5 bg-stone-50 border-none rounded-3xl focus:ring-4 focus:ring-red-700/5 transition-all outline-none font-medium appearance-none" value={rsvpForm.familyCount} onChange={e => setRsvpForm({...rsvpForm, familyCount: parseInt(e.target.value)})}>
+                          {[1,2,3,4,5,6,7,8].map(n => <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>)}
                         </select>
                       </div>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] ml-2">Food Palette</label>
+                        <div className="flex gap-4">
+                          <button type="button" onClick={() => setRsvpForm({...rsvpForm, foodPreference: FoodPreference.VEG})} className={`flex-1 py-5 rounded-3xl font-bold transition-all border-2 ${rsvpForm.foodPreference === FoodPreference.VEG ? 'bg-green-600 border-green-600 text-white shadow-xl' : 'bg-stone-50 border-stone-100 text-stone-400'}`}>Veg</button>
+                          <button type="button" onClick={() => setRsvpForm({...rsvpForm, foodPreference: FoodPreference.NON_VEG})} className={`flex-1 py-5 rounded-3xl font-bold transition-all border-2 ${rsvpForm.foodPreference === FoodPreference.NON_VEG ? 'bg-red-700 border-red-700 text-white shadow-xl' : 'bg-stone-50 border-stone-100 text-stone-400'}`}>Non-Veg</button>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <label className="block text-xs font-bold text-gray-400 uppercase mb-2">Message (Optional)</label>
-                      <textarea 
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-pink-500/20 h-24 resize-none"
-                        placeholder="Write a message for the couple..."
-                        value={rsvpForm.message}
-                        onChange={e => setRsvpForm({...rsvpForm, message: e.target.value})}
-                      />
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em] ml-2">Wishes for the Couple</label>
+                      <textarea className="w-full px-8 py-5 bg-stone-50 border-none rounded-3xl focus:ring-4 focus:ring-red-700/5 transition-all outline-none h-32 resize-none font-medium" placeholder="Your warm wishes..." value={rsvpForm.message} onChange={e => setRsvpForm({...rsvpForm, message: e.target.value})} />
                     </div>
-                    <button 
-                      type="submit"
-                      className="w-full bg-pink-600 text-white py-4 rounded-2xl font-bold shadow-lg shadow-pink-100 mt-4"
-                    >
-                      Confirm RSVP
-                    </button>
+                    <button type="submit" className="w-full crimson-gradient text-white py-6 rounded-[2.5rem] font-bold text-2xl shadow-2xl shadow-red-900/30 border-t border-white/20 active:scale-95 transition-transform">Confirm Invitation</button>
                   </form>
                 </>
               )}
@@ -291,6 +504,11 @@ const PublicInvite: React.FC = () => {
           </div>
         )}
       </AnimatePresence>
+
+      <footer className="py-20 text-center relative z-10 border-t border-red-50 bg-white">
+          <div className="font-script text-3xl text-red-700 mb-4 tracking-widest">Ankan & Samapika</div>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.4em]">Designing Our Tomorrow • {new Date(settings.date).getFullYear()}</p>
+      </footer>
     </div>
   );
 };

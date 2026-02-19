@@ -1,6 +1,7 @@
 
 import { create } from 'zustand';
 import { Invitee, RSVPStatus, Tag, FoodPreference, UserRole, WeddingSettings, DashboardStats } from '../types';
+
 interface AppState {
   isAuthenticated: boolean;
   user: { username: string; role: UserRole } | null;
@@ -27,14 +28,14 @@ export const useStore = create<AppState>((set, get) => ({
   settings: {
     brideName: 'Samapika',
     groomName: 'Ankan',
-    date: '2026-05-05',
+    date: '2026-05-03',
     time: '18:00',
     venue: 'Sarkar Bari Hamirhati, West Bengal',
-    venueMapUrl: 'https://maps.app.goo.gl/KXdbKTfrzvCwh3cNA',
-    // Use public folder for local images or external URLs for hosted images
+    venueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
+    venueEmbedHtml: '<iframe src="https://www.google.com/maps/embed?pb=!4v1771541461325!6m8!1m7!1sO5LAOe53Ad6dxnI4lIF0NQ!2m2!1d23.32824631436691!2d87.35279235053112!3f288.67129715551334!4f11.173259832279115!5f0.7820865974627469" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
     contacts: [
-      { name: 'Rini', phone: '+91 8145110379', role: 'Groom\'s Sister', photo: 'public\\IMG20240601183843.jpg' },
-      { name: 'Riya', phone: '+91 7076990491', role: 'Groom\'s Sister', photo: 'public\\IMG20240601183835.jpg' }
+      { name: 'Rini', phone: '+91 8145110379', role: 'Groom\'s Sister', photo: 'https://picsum.photos/seed/sneha/100/100' },
+      { name: 'Riya', phone: '+91 7076990491', role: 'Groom\'s Sister', photo: 'https://picsum.photos/seed/sneha/100/100' }
     ],
     galleryImages: [
       'https://picsum.photos/seed/wedding1/800/600',

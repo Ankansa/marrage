@@ -41,6 +41,7 @@ export interface WeddingSettings {
   time: string;
   venue: string;
   venueMapUrl?: string;
+  venueEmbedHtml?: string;
   contacts: { name: string; phone: string; role: string; photo?: string }[];
   galleryImages: string[];
   slug: string;
