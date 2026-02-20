@@ -335,7 +335,7 @@ const PublicInvite: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
             {/* Groom Side */}
             <div className="space-y-16">
-              <h4 className="font-serif text-4xl text-center text-amber-800 pb-6 border-b-2 border-amber-100 italic font-bold">Boro-Pokkho (Groom's Family)</h4>
+              <h4 className="font-serif text-4xl text-center text-amber-800 pb-6 border-b-2 border-amber-100 italic font-bold">Bor-Pokkho (Groom's Family)</h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
                 {settings.familyMembers.filter(m => m.side === 'Groom').map((member, i) => (
                   <motion.div whileHover={{ y: -12 }} key={i} className="flex flex-col items-center text-center">

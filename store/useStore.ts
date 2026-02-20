@@ -8,7 +8,7 @@ interface AppState {
   invitees: Invitee[];
   settings: WeddingSettings;
   stats: DashboardStats;
-  
+
   // Actions
   login: (username: string, role: UserRole) => void;
   logout: () => void;
@@ -42,26 +42,26 @@ export const useStore = create<AppState>((set, get) => ({
       'https://images.unsplash.com/photo-1595910358497-5734024f32a8?q=80&w=1200&auto=format&fit=crop'
     ],
     eventGalleries: [
-      { 
-        eventTitle: 'Nandimukh', 
+      {
+        eventTitle: 'Nandimukh',
         images: [
           'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800',
           'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800'
-        ] 
+        ]
       },
-      { 
-        eventTitle: 'Gaye Holud', 
+      {
+        eventTitle: 'Gaye Holud',
         images: [
           'https://images.unsplash.com/photo-1621146022934-52d37c356950?q=80&w=800',
           'https://images.unsplash.com/photo-1544101496-5f71696e73c2?q=80&w=800'
-        ] 
+        ]
       },
-      { 
-        eventTitle: 'Bibaho', 
+      {
+        eventTitle: 'Bibaho',
         images: [
           'https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?q=80&w=800',
           'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800'
-        ] 
+        ]
       }
     ],
     foodMenu: [
@@ -73,15 +73,33 @@ export const useStore = create<AppState>((set, get) => ({
       { name: 'Late Nirad Baran Sarkar', relation: 'Grandfather (Groom)', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Nirad+Baran+Sarkar&size=250' },
       { name: 'Krishnapada Sarkar', relation: 'Father of Groom', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Krishnapada+Sarkar&size=250' },
       { name: 'Late Rinku Sarkar', relation: 'Mother of Groom', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Rinku+Sarkar&size=250' },
-      { name: 'Late Sashank Sekhar Sarkar', relation: 'Grandfather (Bride)', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Sashank+Sekhar+Sarkar&size=250' },
+      {
+        name: 'Manisha Sarkar',
+        relation: 'Sister of Bride',
+        side: 'Groom',
+        photo: 'https://eu.ui-avatars.com/api/?name=Manisha+Sarkar&size=250'
+      },
+      {
+        name: 'Moumita Sarkar',
+        relation: 'Sister of Bride',
+        side: 'Groom',
+        photo: 'https://eu.ui-avatars.com/api/?name=Moumita+Sarkar&size=250'
+      },
+      {
+        name: 'Shibdas Sarkar',
+        relation: 'Brother of Groom',
+        side: 'Bride',
+        photo: 'https://eu.ui-avatars.com/api/?name=Shibdas+Sarkar&size=250'
+      },
+      { name: 'Late Sitanshu Sekhar Sarkar', relation: 'Grandfather (Bride)', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Sashank+Sekhar+Sarkar&size=250' },
       { name: 'Late Nirmal Sarkar', relation: 'Father of Bride', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Nirmal+Sarkar&size=250' },
       { name: 'Kakuli Sarkar', relation: 'Mother of Bride', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Kakuli+Sarkar&size=250' }
     ],
     addresses: {
       bride: 'Roy Villa, Hamirhati, Sonamukhi, Bankura - 722207',
-      groom: 'Sarkar Bari, Salt Lake Sector V, Kolkata - 700091',
+      groom: 'Mirchoba, Chhotonilpur, Bardhaman, West Bengal 713103',
       marriageVenue: 'Suniti Ceremonial House, Hamirhati',
-      receptionVenue: 'Sarkar Bari Courtyard, Hamirhati',
+      receptionVenue: 'Sarkar Bari Hamirhati, Bankura - 722207',
       brideMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
       groomMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
       marriageVenueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
@@ -100,7 +118,7 @@ export const useStore = create<AppState>((set, get) => ({
 
   login: (username, role) => set({ isAuthenticated: true, user: { username, role } }),
   logout: () => set({ isAuthenticated: false, user: null }),
-  
+
   initializeData: () => {
     const mockInvitees: Invitee[] = [
       { id: '1', name: 'Sourav Ganguly', phone: '9830000001', familyCount: 4, rsvpStatus: RSVPStatus.CONFIRMED, foodPreference: FoodPreference.NON_VEG, tag: Tag.VIP, arrived: true, createdAt: new Date().toISOString() },
