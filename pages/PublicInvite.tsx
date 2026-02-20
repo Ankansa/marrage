@@ -66,7 +66,7 @@ const PublicInvite: React.FC = () => {
     {
       name: "Nandimukh",
       desc: "Pre-wedding ritual seeking blessings from ancestors for a new journey.",
-      time: "11:00 AM",
+      time: "08:00 AM",
       date: "May 3, 2026",
       place: "Sarkar Bari Hamirhati",
       icon: "🐚",
@@ -76,7 +76,7 @@ const PublicInvite: React.FC = () => {
     {
       name: "Gaye Holud",
       desc: "Purification and auspicious start with turmeric paste, music, and colorful celebrations.",
-      time: "01:00 PM",
+      time: "09:00 PM",
       date: "May 3, 2026",
       place: "Sarkar Bari Hamirhati",
       icon: "🌼",
@@ -86,7 +86,7 @@ const PublicInvite: React.FC = () => {
     {
       name: "Shubho Bibaho",
       desc: "The sacred union featuring Saat Paak and Sindoor Daan.",
-      time: "07:00 PM",
+      time: "07:00 PM Onwards",
       date: "May 3, 2026",
       place: "Suniti Ceremonial House",
       icon: "🔥",
