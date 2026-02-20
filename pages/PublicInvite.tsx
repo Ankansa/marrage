@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Heart, Calendar, Clock, MapPin, Phone, MessageSquare, Check, X, Music, Volume2, VolumeX, Globe, Star, UtensilsCrossed } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { RSVPStatus, FoodPreference } from '../types';
+import background_photo from '../public/background.jpg'; // ← Replace with better hosted Bengali bride + palki image
 
 const PublicInvite: React.FC = () => {
   const { slug } = useParams();
@@ -196,6 +197,8 @@ const PublicInvite: React.FC = () => {
       <section className="relative h-screen overflow-hidden flex items-center justify-center">
         <motion.div style={{ scale: heroScale, opacity: heroOpacity }} className="absolute inset-0 z-0">
           <img
+          src={background_photo} // ← Replace with better hosted Bengali bride + palki image
+          alt="Bride in traditional palki illustration" className="w-full h-full object-cover brightness-[0.65] contrast-[1.1] sepia-[0.25] opacity-80"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
         </motion.div>

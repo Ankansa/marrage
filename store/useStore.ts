@@ -41,7 +41,7 @@ export const useStore = create<AppState>((set, get) => ({
     date: '2026-05-03',
     time: '18:00',
     venue: 'Sarkar Bari, Hamirhati',
-    venueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
+    venueMapUrl: 'https://maps.app.goo.gl/KYw8JJg8U5sWYJEY8',
     venueEmbedHtml: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3663.0768994508494!2d87.35021742532297!3d23.32824631436691!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f79727494f4f4f%3A0x288.67129715551334!2sSuniti%20Ceremonial%20House!5e0!3m2!1sen!2sin!4v1771541461325!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
     contacts: [
       { name: 'Rahul', phone: '+91 9876543210', role: 'Groom\'s Brother', photo: 'https://i.pravatar.cc/150?u=rahul' },
@@ -110,10 +110,10 @@ export const useStore = create<AppState>((set, get) => ({
       groom: 'Mirchoba, Chhotonilpur, Bardhaman, West Bengal 713103',
       marriageVenue: 'Suniti Ceremonial House, Hamirhati',
       receptionVenue: 'Sarkar Bari Hamirhati, Bankura - 722207',
-      brideMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
-      groomMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
-      marriageVenueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
-      receptionVenueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l'
+      brideMapUrl: 'https://maps.app.goo.gl/KYw8JJg8U5sWYJEY8',
+      groomMapUrl: 'https://maps.app.goo.gl/KYw8JJg8U5sWYJEY8',
+      marriageVenueMapUrl: 'https://maps.app.goo.gl/KYw8JJg8U5sWYJEY8',
+      receptionVenueMapUrl: 'https://maps.app.goo.gl/KYw8JJg8U5sWYJEY8'
     },
     slug: 'ankan-samapika',
     isActive: true
