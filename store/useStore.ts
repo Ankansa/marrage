@@ -3,14 +3,14 @@ import { create } from 'zustand';
 import { Invitee, RSVPStatus, Tag, FoodPreference, UserRole, WeddingSettings, DashboardStats } from '../types';
 // import rini from '../assets/rini.jpg';
 // import riya from '../assets/ankan.jpg';
-// import '../public/IMG20240601183835.jpg as weddingPhoto1';
-import rini_photo from '../public/rini.jpg';
-import riya_photo from '../public/riya.jpg';
-import kp_photo from '../public/kp.jpg';
-import rinku_photo from '../public/rinku.jpg';
-import sibu_photo from '../public/sibu.jpg';
-import kakuli_photo from '../public/kakuli.jpg';
-import nirmal_photo from '../public/nirmal.jpg';
+// import '../src/IMG20240601183835.jpg as weddingPhoto1';
+import rini_photo from '../src/rini.jpg';
+import riya_photo from '../src/riya.jpg';
+import kp_photo from '../src/kp.jpg';
+import rinku_photo from '../src/rinku.jpg';
+import sibu_photo from '../src/sibu.jpg';
+import kakuli_photo from '../src/kakuli.jpg';
+import nirmal_photo from '../src/nirmal.jpg';
 
 interface AppState {
   isAuthenticated: boolean;

@@ -5,7 +5,13 @@ import { useParams } from 'react-router-dom';
 import { Heart, Calendar, Clock, MapPin, Phone, MessageSquare, Check, X, Music, Volume2, VolumeX, Globe, Star, UtensilsCrossed } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { RSVPStatus, FoodPreference } from '../types';
-import background_photo from '../public/background.jpg'; // ← Replace with better hosted Bengali bride + palki image
+import background_photo from '../src/background.jpg'; // ← Replace with better hosted Bengali bride + palki image
+import sanai from '../src/sanai.mp3';
+import background_photo2 from '../src/background2.jpg'; // ← Replace with better hosted Bengali wedding venue image
+import bor_topor from '../src/bor_topor.png'; // ← Replace with better hosted image of Bengali groom's topor
+import kone_mukut from '../src/kone_mukut.png'; // ← Replace with better hosted image of Bengali bride's mukut
+import background_photo5 from '../src/background5.png'; // ← Replace with better hosted Bengali bride + palki image
+import background_photo6 from '../src/background6.jpg'; // ← Replace with better hosted Bengali bride + palki image
 
 const PublicInvite: React.FC = () => {
   const { slug } = useParams();
@@ -77,7 +83,7 @@ const PublicInvite: React.FC = () => {
     {
       name: "Gaye Holud",
       desc: "Purification and auspicious start with turmeric paste, music, and colorful celebrations.",
-      time: "09:00 PM",
+      time: "09:00 AM",
       date: "May 3, 2026",
       place: "Sarkar Bari Hamirhati",
       icon: "🌼",
@@ -89,7 +95,7 @@ const PublicInvite: React.FC = () => {
       desc: "The sacred union featuring Saat Paak and Sindoor Daan.",
       time: "07:00 PM Onwards",
       date: "May 3, 2026",
-      place: "Suniti Ceremonial House",
+      place: "Suniti Ceremonial House, Vivekananda Collage Road, Purba Burdwan",
       icon: "🔥",
       color: "bg-orange-50",
       accent: "border-orange-200"
@@ -100,37 +106,52 @@ const PublicInvite: React.FC = () => {
       time: "09:00 PM",
       date: "May 5, 2026",
       place: "Sarkar Bari Hamirhati",
-      icon: "🥘",
+      icon: "🍽️",
       color: "bg-amber-50",
       accent: "border-amber-200"
     }
   ];
 
-  const handleRsvp = async (e) => {
-    e.preventDefault(); // THIS STOPS REDIRECT
+  const handleRsvp = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     const formData = new FormData();
-    formData.append("entry.1155597240", rsvpForm.name);
-    formData.append("entry.668376796", rsvpForm.phone);
+    formData.append("entry.1155597240", rsvpForm.name.trim());
+    formData.append("entry.668376796", rsvpForm.phone.trim());
     formData.append("entry.822916664", rsvpForm.familyCount.toString());
     formData.append(
       "entry.877086558",
-      rsvpForm.foodPreference === FoodPreference.NON_VEG
-        ? "NON_VEG"
-        : "VEG"
-    );
-    formData.append("entry.2606285", rsvpForm.message);
+      rsvpForm.foodPreference === FoodPreference.VEG ? "VEG" : "NON_VEG"
+    ); // ← make sure these exact labels match what the form expects (case-sensitive!)
+    formData.append("entry.2606285", rsvpForm.message.trim());
+    // console.log("Submitting RSVP:", Object.fromEntries(formData.entries()));
+    try {
+      const response = await fetch(
+        "https://docs.google.com/forms/d/e/1FAIpQLSeZOdhqyKthC8BJFYBzRzXt2ik_2h8QH7u4cOSX-Iht-PO6vw/formResponse",
+        {
+          method: "POST",
+          mode: "no-cors",           // ← must stay no-cors
+          body: formData
+        }
+      );
 
-    await fetch(
-      "https://docs.google.com/forms/d/e/1FAIpQLSeZOdhqyKthC8BJFYBzRzXt2ik_2h8QH7u4cOSX-Iht-PO6vw/formResponse",
-      {
-        method: "POST",
-        mode: "no-cors",
-        body: formData,
-      }
-    );
+      // Because of no-cors → response.ok / response.status will be opaque (not readable)
+      // So we assume success if no network error was thrown
+      console.log("RSVP submitted (no-cors mode — success assumed)");
+      setSubmitted(true);
+      // Optional: reset form
+      setRsvpForm({
+        name: '',
+        phone: '',
+        familyCount: 1,
+        foodPreference: FoodPreference.NON_VEG,
+        message: ''
+      });
 
-    setSubmitted(true);
+    } catch (err) {
+      console.error("Submission failed:", err);
+      alert("Something went wrong. Please try again or contact the wedding organizer.");
+    }
   };
 
   // Generate petals
@@ -147,7 +168,7 @@ const PublicInvite: React.FC = () => {
     <div ref={containerRef} className="min-h-screen bg-[#fffaf0] relative overflow-x-hidden selection:bg-red-200">
 
       {/* Background Audio */}
-      <audio ref={audioRef} loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" />
+      <audio ref={audioRef} loop src={sanai} />
 
       {/* Floating Petals */}
       {petals.map(p => (
@@ -167,6 +188,7 @@ const PublicInvite: React.FC = () => {
         />
       ))}
 
+
       {/* Floating Music Button */}
       <motion.button
         initial={{ opacity: 0, scale: 0 }}
@@ -177,31 +199,32 @@ const PublicInvite: React.FC = () => {
         {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
       </motion.button>
 
-      {/* Floating Background Alponas */}
-      <div className="fixed inset-0 pointer-events-none z-0 opacity-10">
-        <motion.img
-          animate={{ rotate: 360 }}
-          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-          src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
-          className="absolute -top-20 -left-20 w-96 h-96 grayscale opacity-20"
-        />
-        <motion.img
-          animate={{ rotate: -360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
-          className="absolute -bottom-20 -right-20 w-80 h-80 grayscale opacity-20"
-        />
-      </div>
 
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden flex items-center justify-center">
+
         <motion.div style={{ scale: heroScale, opacity: heroOpacity }} className="absolute inset-0 z-0">
           <img
-          src={background_photo} // ← Replace with better hosted Bengali bride + palki image
-          alt="Bride in traditional palki illustration" className="w-full h-full object-cover brightness-[0.65] contrast-[1.1] sepia-[0.25] opacity-80"
+            src={background_photo} // ← Replace with better hosted Bengali bride + palki image
+            alt="Bride in traditional palki illustration" className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
         </motion.div>
+        {/* Floating Background Alponas */}
+        <div className="fixed inset-0 pointer-events-none z-0 opacity-10">
+          <motion.img
+            animate={{ rotate: 360 }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+            src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
+            className="absolute -top-20 -left-20 w-96 h-96 grayscale opacity-20 animate-spin"
+          />
+          <motion.img
+            animate={{ rotate: -360 }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
+            className="absolute -bottom-20 -right-20 w-80 h-80 grayscale opacity-20 animate-spin"
+          />
+        </div>
 
         <div className="relative z-10 text-center px-6">
           <motion.div
@@ -263,12 +286,18 @@ const PublicInvite: React.FC = () => {
       {/* Welcome Message */}
       {/* Welcome Message - Full Page Layout */}
       <section className="relative min-h-screen flex items-center justify-center py-24 px-6 md:px-20 bg-gradient-to-b from-[#fffaf0] to-white z-10 overflow-hidden">
-
+        <motion.div style={{ scale: heroScale, opacity: heroOpacity }} className="absolute inset-0 z-0">
+          <img
+            src={background_photo5} // ← Replace with better hosted Bengali bride + palki image
+            alt="Bride in traditional palki illustration" className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
+        </motion.div>
         {/* Soft Decorative Background */}
         <div className="absolute inset-0 opacity-5 pointer-events-none">
           <img
             src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
-            className="absolute top-20 left-10 w-72 h-72 grayscale"
+            className="absolute top-20 left-10 w-72 h-72 grayscale "
             alt=""
           />
           <img
@@ -338,27 +367,41 @@ const PublicInvite: React.FC = () => {
         </motion.div>
       </section>
 
-      <section className="py-5 bg-white relative z-10 overflow-hidden">
+      <section className="py-5 bg-white relative z-10 overflow-hidden" style={{ backgroundImage: `url(${background_photo2})` }}>
         <div className="absolute inset-0 alpona-bg pointer-events-none opacity-5" />
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-24">
-            <img src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" className="w-24 h-24 mx-auto mb-6 opacity-30 grayscale" alt="" />
-            <h3 className="font-bengali text-7xl text-red-900 mb-6">পরিচিতি</h3>
+            {/* <img
+              src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
+              className="w-24 h-24 mx-auto mb-6 opacity-70 grayscale animate-spin"
+              alt="Rotating Icon"
+            /> */}
+            <h3 className="font-bengali text-7xl text-red-700 mb-6">পরিচিতি</h3>
             <div className="w-32 h-1 bg-red-900 mx-auto" />
-            <p className="text-stone-500 font-serif italic text-2xl mt-8">Introducing our beloved families uniting for a new journey.</p>
+            <p className="text-stone-300 font-serif italic text-2xl mt-8">Introducing our beloved families uniting for a new journey.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
             {/* Groom Side */}
-            <div className="space-y-16">
-              <h4 className="font-serif text-2xl text-center text-amber-800 pb-6 border-b-2 border-amber-100 italic font-bold">Bor-Pokkho (Groom's Family)</h4>
+            <div className="space-y-4">
+              {/* Image above title */}
+              <div className="flex justify-center">
+                <img
+                  src={bor_topor}
+                  alt="Groom Family"
+                  className="w-20 h-auto"
+                />
+              </div>
+              <h4 className="font-serif text-2xl text-center text-gray-400 pb-6 border-b-2 italic font-bold">
+                Bor-Pokkho (Groom's Family)
+              </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
                 {settings.familyMembers.filter(m => m.side === 'Groom').map((member, i) => (
                   <motion.div whileHover={{ y: -12 }} key={i} className="flex flex-col items-center text-center">
                     <div className="w-36 h-36 rounded-full border-4 border-amber-300 p-1 mb-8 shadow-2xl bg-white overflow-hidden ring-8 ring-amber-50">
                       <img src={member.photo} className="w-full h-full object-cover rounded-full" alt={member.name} />
                     </div>
-                    <h5 className="font-bold text-stone-900 text-xl leading-tight">{member.name}</h5>
+                    <h5 className="font-bold  text-xl text-gray-200 leading-tight">{member.name}</h5>
                     <p className="text-[12px] text-amber-700 font-bold uppercase tracking-widest mt-3 px-3 py-1 bg-amber-50 rounded-full">{member.relation}</p>
                   </motion.div>
                 ))}
@@ -366,15 +409,25 @@ const PublicInvite: React.FC = () => {
             </div>
 
             {/* Bride Side */}
-            <div className="space-y-16">
-              <h4 className="font-serif text-2xl text-center text-pink-800 pb-6 border-b-2 border-pink-100 italic font-bold">Kony-Pokkho (Bride's Family)</h4>
+            <div className="space-y-4">
+              {/* Image above title */}
+              <div className="flex justify-center">
+                <img
+                  src={kone_mukut}
+                  alt="Bride Family"
+                  className="w-20 h-auto"
+                />
+              </div>
+              <h4 className="font-serif text-2xl text-center text-gray-400 pb-6 border-b-2 italic font-bold">
+                Kony-Pokkho (Bride's Family)
+              </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
                 {settings.familyMembers.filter(m => m.side === 'Bride').map((member, i) => (
                   <motion.div whileHover={{ y: -12 }} key={i} className="flex flex-col items-center text-center">
                     <div className="w-36 h-36 rounded-full border-4 border-pink-300 p-1 mb-8 shadow-2xl bg-white overflow-hidden ring-8 ring-pink-50">
                       <img src={member.photo} className="w-full h-full object-cover rounded-full" alt={member.name} />
                     </div>
-                    <h5 className="font-bold text-stone-900 text-xl leading-tight">{member.name}</h5>
+                    <h5 className="font-bold text-gray-200 text-xl leading-tight">{member.name}</h5>
                     <p className="text-[12px] text-pink-700 font-bold uppercase tracking-widest mt-3 px-3 py-1 bg-pink-50 rounded-full">{member.relation}</p>
                   </motion.div>
                 ))}
@@ -385,10 +438,18 @@ const PublicInvite: React.FC = () => {
       </section>
 
       {/* Rituals Timeline */}
-      <section className="py-24 px-4 bg-white relative z-10 overflow-hidden">
-        <div className="absolute inset-0 alpona-bg pointer-events-none" />
-        <h3 className="font-serif text-4xl text-center text-gray-800 mb-20">Rituals of Grace</h3>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <section
+        className="py-24 px-4 relative z-10 overflow-hidden bg-cover bg-center"
+        style={{ backgroundImage: `url(${background_photo6})` }}
+      >
+        {/* Optional semi-transparent overlay */}
+        <div className="absolute inset-0 alpona-bg pointer-events-none opacity-20" />
+
+        <h3 className="font-serif text-4xl text-center text-red-900 mb-20 relative z-10">
+          Rituals of Grace
+        </h3>
+
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
           {rituals.map((ritual, idx) => (
             <motion.div
               key={ritual.name}
@@ -581,7 +642,7 @@ const PublicInvite: React.FC = () => {
               exit={{ opacity: 0, y: 100, scale: 0.9 }}
               className="relative w-full max-w-2xl bg-white rounded-t-[4rem] md:rounded-[4rem] p-12 shadow-2xl overflow-hidden border-t-8 border-red-700"
             >
-              <img src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" className="absolute -top-10 -right-10 w-64 h-64 opacity-5 grayscale" />
+              <img src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" className="absolute -top-10 -right-10 w-64 h-64 opacity-5 grayscale animate-spin" />
 
               {submitted ? (
                 <div className="text-center py-24 space-y-8">
