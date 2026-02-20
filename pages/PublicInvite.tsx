@@ -12,7 +12,7 @@ const PublicInvite: React.FC = () => {
   const { settings, addInvitee } = useStore();
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   const [showRsvp, setShowRsvp] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -301,7 +301,7 @@ const PublicInvite: React.FC = () => {
             <p className="text-2xl md:text-3xl max-w-8xl mx-auto italic leading-[2.2] tracking-wide">
               সানন্দ প্রজ্ঞাপনে জানাইতেছি যে, আমাদের গৃহে এক শুভমঙ্গলময় পরিণয়-উৎসব সমাগত।
               আমার পুত্র <b className="text-red-700">অঙ্কন</b> -এর সহিত
-              <b className="text-red-700"> স্বর্গীয় শ্রী রামদাস সরকার এবং কাকুলি সরকারের </b>
+              <b className="text-red-700"> স্বর্গীয় শ্রী নির্মল সরকার এবং কাকুলি সরকারের </b>
               স্নেহকন্যা <b className="text-red-700">সমাপিকা</b>-র শুভ বিবাহ অনুষ্ঠান আগামী
               <b> ৩রা মে, ২০২৬ </b> তারিখ এবং আগামী <b> ৫ই মে, ২০২৬ </b> তারিখে প্রীতিভোজ অনুষ্ঠিত হইবে।
 
@@ -319,7 +319,7 @@ const PublicInvite: React.FC = () => {
 
               The sacred marriage ceremony of my son <b className="text-red-700">Ankan</b>,
               with <b className="text-red-700">Samapika</b>, beloved daughter of
-              <b className="text-red-700"> Late Shri Ramdas Sarkar and Smt. Kakuli Sarkar</b>,
+              <b className="text-red-700"> Late Shri Nirmal Sarkar and Smt. Kakuli Sarkar</b>,
               shall be solemnized on <b>3rd May, 2026</b>.
               The Reception (Preetibhoj) shall be held on <b>5th May, 2026</b>.
 
@@ -504,13 +504,13 @@ const PublicInvite: React.FC = () => {
           <p className="text-gray-500 font-serif italic text-lg leading-relaxed">
             Experience a handpicked menu of authentic Bangali delicacies at the Preeti Bhoj, carefully prepared to celebrate our heritage.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {['Coming ..', 'On Pritivoj', '05-05-2026', 'Stay Tune..'].map(dish => (
               <div key={dish} className="p-4 rounded-2xl bg-orange-50 text-orange-800 font-bold text-xs uppercase tracking-widest border border-orange-100">
                 {dish}
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 
