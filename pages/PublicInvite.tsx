@@ -183,9 +183,6 @@ const PublicInvite: React.FC = () => {
       <section className="relative h-screen overflow-hidden flex items-center justify-center">
         <motion.div style={{ scale: heroScale, opacity: heroOpacity }} className="absolute inset-0 z-0">
           <img
-            src={settings.galleryImages[0]}
-            className="w-full h-full object-cover"
-            alt="Wedding Background"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
         </motion.div>
@@ -248,34 +245,80 @@ const PublicInvite: React.FC = () => {
       </section>
 
       {/* Welcome Message */}
-      <section className="py-10 px-6 max-w-4xl mx-auto text-center relative z-10">
-        <div className="absolute top-0 left-0 w-32 h-32 opacity-10 grayscale">
-          <img src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" alt="" />
+      {/* Welcome Message - Full Page Layout */}
+      <section className="relative min-h-screen flex items-center justify-center py-24 px-6 md:px-20 bg-gradient-to-b from-[#fffaf0] to-white z-10 overflow-hidden">
+
+        {/* Soft Decorative Background */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
+            className="absolute top-20 left-10 w-72 h-72 grayscale"
+            alt=""
+          />
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png"
+            className="absolute bottom-20 right-10 w-72 h-72 grayscale"
+            alt=""
+          />
         </div>
+
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="space-y-10"
+          transition={{ duration: 1 }}
+          className="w-full text-center space-y-16"
         >
-          <div className="text-red-700 font-bengali text-4xl mb-4 tracking-widest">স্বাগতম</div>
-          <h2 className="font-serif text-5xl md:text-6xl text-gray-800">You're Cordially Invited</h2>
-          <p className="text-xl md:text-2xl text-gray-600 font-serif italic leading-relaxed max-w-2xl mx-auto">
 
-            সানন্দ প্রজ্ঞাপনে জানাইতেছি যে, আমাদের গৃহে এক শুভমঙ্গলময় পরিণয়-উৎসব সমাগত।
-            আমার পুত্র <b>অঙ্কন</b> -এর সহিত <b>স্বর্গীয় শ্রী রামদাস সরকার এবং কাকুলি সরকারের </b>স্নেহকন্যা <b>সমাপিকা</b>-র শুভ বিবাহ অনুষ্ঠান আগামী <b>৩রা মে, ২০২৬</b> তারিখ এবং আগামী <b>৫ই মে, ২০২৬</b> তারিখে প্রীতিভোজ অনুষ্ঠিত হইবে।
-
-            উক্ত পুণ্যময় ও মঙ্গলঘন অনুষ্ঠানে আপনাকে ও আপনার সপরিবারে সস্নেহ সাদর উপস্থিত থাকার জন্য বিনীত নিমন্ত্রণ জানাইতেছি। আপনাদের শুভাশীষ ও সৌজন্যমণ্ডিত উপস্থিতি নবদম্পতির ভবিষ্যৎ জীবনপথকে করিবে শ্রীবৃদ্ধি, সৌভাগ্য ও কল্যাণময়।
-          </p>
-          <p className="text-xl md:text-2xl text-gray-600 font-serif italic leading-relaxed max-w-2xl mx-auto">
-            It is with great pleasure that I announce an auspicious and joyous matrimonial celebration in our household.
-
-            The sacred marriage ceremony of my son <b>Ankan</b>, with <b>Samapika</b>, beloved daughter of <b>Late Shri Ramdas Sarkar and Smt. Kakuli Sarkar</b>, shall be solemnized on <b>3rd May, 2026</b>. The Reception (Preetibhoj) shall be held on 5th May, 2026.
-
-            On this holy and blissful occasion, I cordially and respectfully invite you and your esteemed family to grace the ceremony with your gracious presence. Your blessings and noble attendance shall greatly enrich the future journey of the newly wedded couple with prosperity, fortune, and happiness.</p>
-          <div className="flex justify-center gap-4">
-            {[1, 2, 3].map(i => <Star key={i} size={16} className="text-yellow-500" fill="currentColor" />)}
+          {/* Bengali Heading */}
+          <div>
+            <div className="text-red-800 font-bengali text-5xl md:text-7xl tracking-widest mb-6">
+              স্বাগতম
+            </div>
+            <div className="w-40 h-1 bg-red-800 mx-auto" />
           </div>
+
+          {/* Main Invitation Text */}
+          <div className="space-y-20 text-gray-700 font-serif">
+
+            {/* Bengali Paragraph */}
+            <p className="text-2xl md:text-3xl max-w-8xl mx-auto italic leading-[2.2] tracking-wide">
+              সানন্দ প্রজ্ঞাপনে জানাইতেছি যে, আমাদের গৃহে এক শুভমঙ্গলময় পরিণয়-উৎসব সমাগত।
+              আমার পুত্র <b className="text-red-700">অঙ্কন</b> -এর সহিত
+              <b className="text-red-700"> স্বর্গীয় শ্রী রামদাস সরকার এবং কাকুলি সরকারের </b>
+              স্নেহকন্যা <b className="text-red-700">সমাপিকা</b>-র শুভ বিবাহ অনুষ্ঠান আগামী
+              <b> ৩রা মে, ২০২৬ </b> তারিখ এবং আগামী <b> ৫ই মে, ২০২৬ </b> তারিখে প্রীতিভোজ অনুষ্ঠিত হইবে।
+
+              উক্ত পুণ্যময় ও মঙ্গলঘন অনুষ্ঠানে আপনাকে ও আপনার সপরিবারে সস্নেহ সাদর উপস্থিত থাকার জন্য
+              বিনীত নিমন্ত্রণ জানাইতেছি। আপনাদের শুভাশীষ ও সৌজন্যমণ্ডিত উপস্থিতি নবদম্পতির ভবিষ্যৎ জীবনপথকে
+              করিবে শ্রীবৃদ্ধি, সৌভাগ্য ও কল্যাণময়।
+            </p>
+
+            {/* Divider */}
+            <div className="w-40 h-px bg-gradient-to-r from-transparent via-red-400 to-transparent mx-auto" />
+
+            {/* English Paragraph */}
+            <p className="text-xl md:text-2xl max-w-8xl mx-auto italic leading-[2.1] tracking-wide">
+              It is with great pleasure that I announce an auspicious and joyous matrimonial celebration in our household.
+
+              The sacred marriage ceremony of my son <b className="text-red-700">Ankan</b>,
+              with <b className="text-red-700">Samapika</b>, beloved daughter of
+              <b className="text-red-700"> Late Shri Ramdas Sarkar and Smt. Kakuli Sarkar</b>,
+              shall be solemnized on <b>3rd May, 2026</b>.
+              The Reception (Preetibhoj) shall be held on <b>5th May, 2026</b>.
+
+              On this holy and blissful occasion, I cordially and respectfully invite you and your esteemed family to grace the ceremony with your gracious presence. Your blessings and noble attendance shall greatly enrich the future journey of the newly wedded couple with prosperity, fortune, and happiness.
+            </p>
+
+          </div>
+
+          {/* Decorative Stars */}
+          <div className="flex justify-center gap-6 mt-10">
+            {[1, 2, 3].map(i => (
+              <Star key={i} size={20} className="text-yellow-500" fill="currentColor" />
+            ))}
+          </div>
+
         </motion.div>
       </section>
 
@@ -380,7 +423,7 @@ const PublicInvite: React.FC = () => {
             </div>
             <div className="flex items-center gap-4 text-stone-500">
               <Calendar size={24} className="text-yellow-500" />
-              <span className="text-xl font-medium tracking-wide">{settings.date}</span>
+              <span className="text-xl font-medium tracking-wide">05-05-2026</span>
             </div>
 
             <div className="flex flex-wrap gap-6">
