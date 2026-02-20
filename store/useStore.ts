@@ -48,8 +48,9 @@ export const useStore = create<AppState>((set, get) => ({
       { name: 'Sneha', phone: '+91 9876543211', role: 'Bride\'s Sister', photo: 'https://i.pravatar.cc/150?u=sneha' }
     ],
     galleryImages: [
-      'https://images.unsplash.com/photo-1610173827002-62c0f1f12d02?q=80&w=1200&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1595910358497-5734024f32a8?q=80&w=1200&auto=format&fit=crop'
+      "https://images.unsplash.com/photo-1519741497674-611481863552",
+      "https://images.unsplash.com/photo-1529634806980-85c3dd6d34ac",
+      "https://images.unsplash.com/photo-1505852679233-d9fd70aff56d"
     ],
     eventGalleries: [
       {
