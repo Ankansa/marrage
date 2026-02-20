@@ -11,7 +11,7 @@ const PublicInvite: React.FC = () => {
   const { settings, addInvitee } = useStore();
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   const [showRsvp, setShowRsvp] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [submitted, setSubmitted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
