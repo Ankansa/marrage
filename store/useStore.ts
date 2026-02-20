@@ -1,6 +1,16 @@
 
 import { create } from 'zustand';
 import { Invitee, RSVPStatus, Tag, FoodPreference, UserRole, WeddingSettings, DashboardStats } from '../types';
+// import rini from '../assets/rini.jpg';
+// import riya from '../assets/ankan.jpg';
+// import '../public/IMG20240601183835.jpg as weddingPhoto1';
+import rini_photo from '../public/rini.jpg';
+import riya_photo from '../public/riya.jpg';
+import kp_photo from '../public/kp.jpg';
+import rinku_photo from '../public/rinku.jpg';
+import sibu_photo from '../public/sibu.jpg';
+import kakuli_photo from '../public/kakuli.jpg';
+import nirmal_photo from '../public/nirmal.jpg';
 
 interface AppState {
   isAuthenticated: boolean;
@@ -71,29 +81,29 @@ export const useStore = create<AppState>((set, get) => ({
     ],
     familyMembers: [
       { name: 'Late Nirad Baran Sarkar', relation: 'Grandfather (Groom)', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Nirad+Baran+Sarkar&size=250' },
-      { name: 'Krishnapada Sarkar', relation: 'Father of Groom', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Krishnapada+Sarkar&size=250' },
-      { name: 'Late Rinku Sarkar', relation: 'Mother of Groom', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Rinku+Sarkar&size=250' },
+      { name: 'Krishnapada Sarkar', relation: 'Father of Groom', side: 'Groom', photo: kp_photo },
+      { name: 'Late Rinku Sarkar', relation: 'Mother of Groom', side: 'Groom', photo: rinku_photo },
       {
         name: 'Manisha Sarkar',
-        relation: 'Sister of Bride',
+        relation: 'Sister of Groom',
         side: 'Groom',
-        photo: 'https://eu.ui-avatars.com/api/?name=Manisha+Sarkar&size=250'
+        photo: riya_photo
       },
       {
         name: 'Moumita Sarkar',
-        relation: 'Sister of Bride',
+        relation: 'Sister of Groom',
         side: 'Groom',
-        photo: 'https://eu.ui-avatars.com/api/?name=Moumita+Sarkar&size=250'
-      },
-      {
-        name: 'Shibdas Sarkar',
-        relation: 'Brother of Groom',
-        side: 'Bride',
-        photo: 'https://eu.ui-avatars.com/api/?name=Shibdas+Sarkar&size=250'
+        photo: rini_photo
       },
       { name: 'Late Sitanshu Sekhar Sarkar', relation: 'Grandfather (Bride)', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Sashank+Sekhar+Sarkar&size=250' },
-      { name: 'Late Nirmal Sarkar', relation: 'Father of Bride', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Nirmal+Sarkar&size=250' },
-      { name: 'Kakuli Sarkar', relation: 'Mother of Bride', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Kakuli+Sarkar&size=250' }
+      { name: 'Late Nirmal Sarkar', relation: 'Father of Bride', side: 'Bride', photo: nirmal_photo },
+      { name: 'Kakuli Sarkar', relation: 'Mother of Bride', side: 'Bride', photo: kakuli_photo },
+      {
+        name: 'Shibdas Sarkar',
+        relation: 'Brother of Bride',
+        side: 'Bride',
+        photo: sibu_photo
+      }
     ],
     addresses: {
       bride: 'Roy Villa, Hamirhati, Sonamukhi, Bankura - 722207',

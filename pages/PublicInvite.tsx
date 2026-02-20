@@ -105,18 +105,31 @@ const PublicInvite: React.FC = () => {
     }
   ];
 
-  const handleRsvp = (e: React.FormEvent) => {
-    e.preventDefault();
-    addInvitee({
-      ...rsvpForm,
-      tag: 'Guest side' as any,
-      rsvpStatus: RSVPStatus.CONFIRMED
-    });
+  const handleRsvp = async (e) => {
+    e.preventDefault(); // THIS STOPS REDIRECT
+
+    const formData = new FormData();
+    formData.append("entry.1155597240", rsvpForm.name);
+    formData.append("entry.668376796", rsvpForm.phone);
+    formData.append("entry.822916664", rsvpForm.familyCount.toString());
+    formData.append(
+      "entry.877086558",
+      rsvpForm.foodPreference === FoodPreference.NON_VEG
+        ? "NON_VEG"
+        : "VEG"
+    );
+    formData.append("entry.2606285", rsvpForm.message);
+
+    await fetch(
+      "https://docs.google.com/forms/d/e/1FAIpQLSeZOdhqyKthC8BJFYBzRzXt2ik_2h8QH7u4cOSX-Iht-PO6vw/formResponse",
+      {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+      }
+    );
+
     setSubmitted(true);
-    setTimeout(() => {
-      setShowRsvp(false);
-      setSubmitted(false);
-    }, 3000);
   };
 
   // Generate petals
@@ -335,7 +348,7 @@ const PublicInvite: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
             {/* Groom Side */}
             <div className="space-y-16">
-              <h4 className="font-serif text-4xl text-center text-amber-800 pb-6 border-b-2 border-amber-100 italic font-bold">Bor-Pokkho (Groom's Family)</h4>
+              <h4 className="font-serif text-2xl text-center text-amber-800 pb-6 border-b-2 border-amber-100 italic font-bold">Bor-Pokkho (Groom's Family)</h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
                 {settings.familyMembers.filter(m => m.side === 'Groom').map((member, i) => (
                   <motion.div whileHover={{ y: -12 }} key={i} className="flex flex-col items-center text-center">
@@ -351,7 +364,7 @@ const PublicInvite: React.FC = () => {
 
             {/* Bride Side */}
             <div className="space-y-16">
-              <h4 className="font-serif text-4xl text-center text-pink-800 pb-6 border-b-2 border-pink-100 italic font-bold">Kony-Pokkho (Bride's Family)</h4>
+              <h4 className="font-serif text-2xl text-center text-pink-800 pb-6 border-b-2 border-pink-100 italic font-bold">Kony-Pokkho (Bride's Family)</h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
                 {settings.familyMembers.filter(m => m.side === 'Bride').map((member, i) => (
                   <motion.div whileHover={{ y: -12 }} key={i} className="flex flex-col items-center text-center">
