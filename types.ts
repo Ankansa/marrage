@@ -34,6 +34,23 @@ export interface Invitee {
   createdAt: string;
 }
 
+export interface GallerySection {
+  eventTitle: string;
+  images: string[];
+}
+
+export interface MenuItem {
+  category: string;
+  items: string[];
+}
+
+export interface FamilyMember {
+  name: string;
+  relation: string;
+  side: 'Bride' | 'Groom';
+  photo?: string;
+}
+
 export interface WeddingSettings {
   brideName: string;
   groomName: string;
@@ -44,6 +61,19 @@ export interface WeddingSettings {
   venueEmbedHtml?: string;
   contacts: { name: string; phone: string; role: string; photo?: string }[];
   galleryImages: string[];
+  eventGalleries: GallerySection[];
+  foodMenu: MenuItem[];
+  familyMembers: FamilyMember[];
+  addresses: {
+    bride: string;
+    groom: string;
+    marriageVenue: string;
+    receptionVenue: string;
+    brideMapUrl?: string;
+    groomMapUrl?: string;
+    marriageVenueMapUrl?: string;
+    receptionVenueMapUrl?: string;
+  };
   slug: string;
   isActive: boolean;
 }

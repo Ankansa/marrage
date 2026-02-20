@@ -30,18 +30,63 @@ export const useStore = create<AppState>((set, get) => ({
     groomName: 'Ankan',
     date: '2026-05-03',
     time: '18:00',
-    venue: 'Sarkar Bari Hamirhati, West Bengal',
+    venue: 'Sarkar Bari, Hamirhati',
     venueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
-    venueEmbedHtml: '<iframe src="https://www.google.com/maps/embed?pb=!4v1771541461325!6m8!1m7!1sO5LAOe53Ad6dxnI4lIF0NQ!2m2!1d23.32824631436691!2d87.35279235053112!3f288.67129715551334!4f11.173259832279115!5f0.7820865974627469" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
+    venueEmbedHtml: '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3663.0768994508494!2d87.35021742532297!3d23.32824631436691!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f79727494f4f4f%3A0x288.67129715551334!2sSuniti%20Ceremonial%20House!5e0!3m2!1sen!2sin!4v1771541461325!5m2!1sen!2sin" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>',
     contacts: [
-      { name: 'Rini', phone: '+91 8145110379', role: 'Groom\'s Sister', photo: 'https://picsum.photos/seed/sneha/100/100' },
-      { name: 'Riya', phone: '+91 7076990491', role: 'Groom\'s Sister', photo: 'https://picsum.photos/seed/sneha/100/100' }
+      { name: 'Rahul', phone: '+91 9876543210', role: 'Groom\'s Brother', photo: 'https://i.pravatar.cc/150?u=rahul' },
+      { name: 'Sneha', phone: '+91 9876543211', role: 'Bride\'s Sister', photo: 'https://i.pravatar.cc/150?u=sneha' }
     ],
     galleryImages: [
-      'https://picsum.photos/seed/wedding1/800/600',
-      'https://picsum.photos/seed/wedding2/800/600',
-      'https://picsum.photos/seed/wedding3/800/600'
+      'https://images.unsplash.com/photo-1610173827002-62c0f1f12d02?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1595910358497-5734024f32a8?q=80&w=1200&auto=format&fit=crop'
     ],
+    eventGalleries: [
+      { 
+        eventTitle: 'Nandimukh', 
+        images: [
+          'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=800',
+          'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800'
+        ] 
+      },
+      { 
+        eventTitle: 'Gaye Holud', 
+        images: [
+          'https://images.unsplash.com/photo-1621146022934-52d37c356950?q=80&w=800',
+          'https://images.unsplash.com/photo-1544101496-5f71696e73c2?q=80&w=800'
+        ] 
+      },
+      { 
+        eventTitle: 'Bibaho', 
+        images: [
+          'https://images.unsplash.com/photo-1604335399105-a0c585fd81a1?q=80&w=800',
+          'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=800'
+        ] 
+      }
+    ],
+    foodMenu: [
+      { category: 'Starters', items: ['Gondhoraj Chicken Fry', 'Posto-er Bora', 'Paneer Finger', 'Darjeeling Coffee'] },
+      { category: 'Bhoj (Main)', items: ['Basanti Pulao', 'Kochi Pathar Jhol', 'Katla Kalia', 'Chingri Malaikari', 'Dhokar Dalna'] },
+      { category: 'Mishti (Dessert)', items: ['Nolen Gur-er Rosogolla', 'Mishti Doi', 'Baked Mihidana', 'Mishit Pan'] }
+    ],
+    familyMembers: [
+      { name: 'Late Nirad Baran Sarkar', relation: 'Grandfather (Groom)', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Nirad+Baran+Sarkar&size=250' },
+      { name: 'Krishnapada Sarkar', relation: 'Father of Groom', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Krishnapada+Sarkar&size=250' },
+      { name: 'Late Rinku Sarkar', relation: 'Mother of Groom', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Rinku+Sarkar&size=250' },
+      { name: 'Late Sashank Sekhar Sarkar', relation: 'Grandfather (Bride)', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Sashank+Sekhar+Sarkar&size=250' },
+      { name: 'Late Nirmal Sarkar', relation: 'Father of Bride', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Nirmal+Sarkar&size=250' },
+      { name: 'Kakuli Sarkar', relation: 'Mother of Bride', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Kakuli+Sarkar&size=250' }
+    ],
+    addresses: {
+      bride: 'Roy Villa, Hamirhati, Sonamukhi, Bankura - 722207',
+      groom: 'Sarkar Bari, Salt Lake Sector V, Kolkata - 700091',
+      marriageVenue: 'Suniti Ceremonial House, Hamirhati',
+      receptionVenue: 'Sarkar Bari Courtyard, Hamirhati',
+      brideMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
+      groomMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
+      marriageVenueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l',
+      receptionVenueMapUrl: 'https://maps.app.goo.gl/oNLAOe53Ad6dxnI4l'
+    },
     slug: 'ankan-samapika',
     isActive: true
   },
@@ -57,12 +102,8 @@ export const useStore = create<AppState>((set, get) => ({
   logout: () => set({ isAuthenticated: false, user: null }),
   
   initializeData: () => {
-    // Generating some mock data
     const mockInvitees: Invitee[] = [
       { id: '1', name: 'Sourav Ganguly', phone: '9830000001', familyCount: 4, rsvpStatus: RSVPStatus.CONFIRMED, foodPreference: FoodPreference.NON_VEG, tag: Tag.VIP, arrived: true, createdAt: new Date().toISOString() },
-      { id: '2', name: 'Amrita Chatterjee', phone: '9830000002', familyCount: 2, rsvpStatus: RSVPStatus.PENDING, foodPreference: FoodPreference.VEG, tag: Tag.BRIDE, arrived: false, createdAt: new Date().toISOString() },
-      { id: '3', name: 'Bimal Das', phone: '9830000003', familyCount: 1, rsvpStatus: RSVPStatus.DECLINED, foodPreference: FoodPreference.NON_VEG, tag: Tag.GROOM, arrived: false, createdAt: new Date().toISOString() },
-      { id: '4', name: 'Nandini Roy', phone: '9830000004', familyCount: 3, rsvpStatus: RSVPStatus.CONFIRMED, foodPreference: FoodPreference.VEG, tag: Tag.BRIDE, arrived: false, createdAt: new Date().toISOString() },
     ];
     set({ invitees: mockInvitees });
     get().recalculateStats();
