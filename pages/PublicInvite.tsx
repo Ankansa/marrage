@@ -12,13 +12,14 @@ import bor_topor from '../src/bor_topor.png'; // ← Replace with better hosted 
 import kone_mukut from '../src/kone_mukut.png'; // ← Replace with better hosted image of Bengali bride's mukut
 import background_photo5 from '../src/background5.png'; // ← Replace with better hosted Bengali bride + palki image
 import background_photo6 from '../src/background6.jpg'; // ← Replace with better hosted Bengali bride + palki image
+import groupdance_photo from '../src/groupdance.png'
 
 const PublicInvite: React.FC = () => {
   const { slug } = useParams();
   const { settings, addInvitee } = useStore();
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   const [showRsvp, setShowRsvp] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -40,34 +41,69 @@ const PublicInvite: React.FC = () => {
   });
 
   useEffect(() => {
-    const weddingDate = new Date(`${settings.date}T${settings.time}`).getTime();
-    const timer = setInterval(() => {
+    // ────────────────────────────────────────────────
+    // Parse wedding date safely + log for debugging
+    // ────────────────────────────────────────────────
+    let weddingDateMs: number;
+
+    try {
+      // Option 1: if settings.date is ISO format like "2026-05-03"
+      // and settings.time is "19:00" or "19:00:00"
+      const dateTimeStr = `${settings.date}T${settings.time}`;
+      const parsed = new Date(dateTimeStr);
+
+      if (isNaN(parsed.getTime())) {
+        throw new Error("Invalid date from settings.date + settings.time");
+      }
+
+      weddingDateMs = parsed.getTime();
+      console.log("Wedding date parsed successfully:", new Date(weddingDateMs).toLocaleString());
+    } catch (err) {
+      console.error("Failed to parse wedding date:", err);
+      console.log("Raw settings.date:", settings.date);
+      console.log("Raw settings.time:", settings.time);
+
+      // Fallback: hardcode for testing (remove later)
+      weddingDateMs = new Date("2026-05-03T19:00:00").getTime();
+      console.warn("Using fallback wedding date for testing");
+    }
+
+    // ────────────────────────────────────────────────
+    // Timer logic
+    // ────────────────────────────────────────────────
+    const updateTimer = () => {
       const now = new Date().getTime();
-      const distance = weddingDate - now;
-      if (distance < 0) {
-        clearInterval(timer);
+      const distance = weddingDateMs - now;
+
+      if (distance <= 0) {
+        setTimeLeft({ days: 0, hours: 0, mins: 0, secs: 0 });
         return;
       }
+
       setTimeLeft({
         days: Math.floor(distance / (1000 * 60 * 60 * 24)),
         hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
         mins: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-        secs: Math.floor((distance % (1000 * 60)) / 1000)
+        secs: Math.floor((distance % (1000 * 60)) / 1000),
       });
-    }, 1000);
+    };
+
+    updateTimer(); // run immediately
+    const timer = setInterval(updateTimer, 1000);
+
     return () => clearInterval(timer);
   }, [settings.date, settings.time]);
 
-  const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(e => console.log("Audio play blocked"));
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
+  // const toggleMusic = () => {
+  //   if (audioRef.current) {
+  //     if (isPlaying) {
+  //       audioRef.current.pause();
+  //     } else {
+  //       audioRef.current.play().catch(e => console.log("Audio play blocked"));
+  //     }
+  //     setIsPlaying(!isPlaying);
+  //   }
+  // };
 
   const rituals = [
     {
@@ -165,6 +201,7 @@ const PublicInvite: React.FC = () => {
   }));
 
   return (
+
     <div ref={containerRef} className="min-h-screen bg-[#fffaf0] relative overflow-x-hidden selection:bg-red-200">
 
       {/* Background Audio */}
@@ -190,15 +227,14 @@ const PublicInvite: React.FC = () => {
 
 
       {/* Floating Music Button */}
-      <motion.button
+      {/* <motion.button
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         onClick={toggleMusic}
         className="fixed top-6 right-6 z-[110] w-12 h-12 rounded-full crimson-gradient text-white flex items-center justify-center shadow-2xl border-2 border-white/40"
       >
         {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
-      </motion.button>
-
+      </motion.button> */}
 
       {/* Hero Section */}
       <section className="relative h-screen overflow-hidden flex items-center justify-center">
@@ -225,9 +261,8 @@ const PublicInvite: React.FC = () => {
             className="absolute -bottom-20 -right-20 w-80 h-80 grayscale opacity-20 animate-spin"
           />
         </div>
-
         <div className="relative z-10 text-center px-6">
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1 }}
@@ -235,18 +270,41 @@ const PublicInvite: React.FC = () => {
           >
             <p className="font-bengali text-2xl text-yellow-400 mb-2 tracking-[0.4em] drop-shadow-md">শুভ বিবাহ</p>
             <div className="w-24 h-px bg-yellow-400 mx-auto mb-6" />
-          </motion.div>
+          </motion.div> */}
 
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 1 }}
-            className="font-serif text-7xl md:text-9xl text-white font-bold leading-tight"
+            transition={{ delay: 0.6, duration: 1 }}
+            className="flex items-center justify-center my-10 md:my-16 gap-8 md:gap-20 flex-wrap"
           >
-            {settings.groomName} <br />
-            <span className="font-script gold-text text-8xl md:text-[10rem] block my-6 drop-shadow-lg">&</span>
-            {settings.brideName}
-          </motion.h1>
+            {/* <h1 className="font-script gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative after:content-[''] after:absolute after:-right-16 after:top-1/2 after:-translate-y-1/2 after:w-24 after:h-1 after:bg-gradient-to-r after:from-yellow-400 after:to-transparent md:after:w-40">
+              {settings.groomName}
+            </h1> */}
+
+            <span className="font-script gold-text  md:text-[5rem] drop-shadow-2xl scale-110 md:scale-125">শ্রী শ্রী প্রজাপতি ঋষির আশীর্বাদ</span>
+
+            {/* <h1 className="font-script gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative before:content-[''] before:absolute before:-left-16 before:top-1/2 before:-translate-y-1/2 before:w-24 before:h-1 before:bg-gradient-to-l before:from-yellow-400 before:to-transparent md:before:w-40">
+              {settings.brideName}
+            </h1> */}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 1 }}
+            className="flex items-center justify-center my-10 md:my-16 gap-8 md:gap-20 flex-wrap"
+          >
+            <h1 className="font-script gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative after:content-[''] after:absolute after:-right-16 after:top-1/2 after:-translate-y-1/2 after:w-24 after:h-1 after:bg-gradient-to-r after:from-yellow-400 after:to-transparent md:after:w-40">
+              {settings.groomName}
+            </h1>
+
+            <span className="font-script gold-text text-9xl md:text-[12rem] drop-shadow-2xl scale-110 md:scale-125">&</span>
+
+            <h1 className="font-script gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative before:content-[''] before:absolute before:-left-16 before:top-1/2 before:-translate-y-1/2 before:w-24 before:h-1 before:bg-gradient-to-l before:from-yellow-400 before:to-transparent md:before:w-40">
+              {settings.brideName}
+            </h1>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -327,8 +385,7 @@ const PublicInvite: React.FC = () => {
           <div className="space-y-20 text-gray-700 font-serif">
 
             {/* Bengali Paragraph */}
-            <p className="text-2xl md:text-3xl max-w-8xl mx-auto italic leading-[2.2] tracking-wide">
-              সানন্দ প্রজ্ঞাপনে জানাইতেছি যে, আমাদের গৃহে এক শুভমঙ্গলময় পরিণয়-উৎসব সমাগত।
+            <p className="text-xl md:text-2xl max-w-8xl mx-auto italic leading-[2.1] md:leading-[2.1] lg:leading-[2.1] tracking-wide">              সানন্দ প্রজ্ঞাপনে জানাইতেছি যে, আমাদের গৃহে এক শুভমঙ্গলময় পরিণয়-উৎসব সমাগত।
               আমার পুত্র <b className="text-red-700">অঙ্কন</b> -এর সহিত
               <b className="text-red-700"> স্বর্গীয় শ্রী নির্মল সরকার এবং কাকুলি সরকারের </b>
               স্নেহকন্যা <b className="text-red-700">সমাপিকা</b>-র শুভ বিবাহ অনুষ্ঠান আগামী
@@ -343,7 +400,7 @@ const PublicInvite: React.FC = () => {
             <div className="w-40 h-px bg-gradient-to-r from-transparent via-red-400 to-transparent mx-auto" />
 
             {/* English Paragraph */}
-            <p className="text-xl md:text-2xl max-w-8xl mx-auto italic leading-[2.1] tracking-wide">
+            <p className="text-xl md:text-2xl max-w-8xl mx-auto italic leading-[2] md:leading-[2] lg:leading-[2] tracking-wide">
               It is with great pleasure that I announce an auspicious and joyous matrimonial celebration in our household.
 
               The sacred marriage ceremony of my son <b className="text-red-700">Ankan</b>,
@@ -445,8 +502,8 @@ const PublicInvite: React.FC = () => {
         {/* Optional semi-transparent overlay */}
         <div className="absolute inset-0 alpona-bg pointer-events-none opacity-20" />
 
-        <h3 className="font-serif text-4xl text-center text-red-900 mb-20 relative z-10">
-          Rituals of Grace
+        <h3 className="font-serif text-4xl text-center text-red-100 mb-20 relative z-10">
+          <b>Rituals of Grace</b>
         </h3>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
@@ -616,6 +673,45 @@ const PublicInvite: React.FC = () => {
           <p className="text-gray-500 mb-16 max-w-xl mx-auto text-xl font-serif italic">
             Your presence will add an irreplaceable sparkle to our celebrations. Please confirm your arrival below.
           </p>
+
+
+
+
+
+
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.03 }}
+            className="
+    relative 
+    rounded-[3rem] 
+    overflow-hidden 
+    shadow-2xl 
+    border-4 
+    border-white 
+    mx-auto                  /* ← centers horizontally */
+    block                    /* makes mx-auto work */
+    w-full max-w-[320px]     /* or whatever max width you want */
+    mb-6                     /* spacing between rows */
+  "
+          >
+            <img
+              src={groupdance_photo}
+              className="w-full h-auto object-cover"   // changed w-30 → w-full
+              alt="Gallery"
+            />
+          </motion.div>
+
+
+
+
+
+
+
+
           <button
             onClick={() => setShowRsvp(true)}
             className="hidden md:inline-flex items-center gap-4 crimson-gradient text-white px-16 py-6 rounded-[3rem] font-bold text-2xl shadow-2xl shadow-red-900/30 hover:scale-110 transition-all border-t border-white/20"
@@ -652,7 +748,7 @@ const PublicInvite: React.FC = () => {
                   >
                     <Check size={64} />
                   </motion.div>
-                  <h3 className="font-serif text-5xl text-gray-900">অশেষ ধন্যবাদ!</h3>
+                  <h3 className="font-serif text-5xl text-gray-900">ধন্যবাদ!</h3>
                   <p className="text-gray-500 text-xl font-serif italic">We are truly excited to celebrate our union with you.</p>
                 </div>
               ) : (
