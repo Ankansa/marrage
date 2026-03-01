@@ -289,21 +289,87 @@ const PublicInvite: React.FC = () => {
             </h1> */}
           </motion.div>
 
-          <motion.div
+          {/* <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 1 }}
             className="flex items-center justify-center my-10 md:my-16 gap-8 md:gap-20 flex-wrap"
           >
-            <h1 className="font-script gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative after:content-[''] after:absolute after:-right-16 after:top-1/2 after:-translate-y-1/2 after:w-24 after:h-1 after:bg-gradient-to-r after:from-yellow-400 after:to-transparent md:after:w-40">
+            <h1 className="font-script text-yellow-200 md:gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative after:content-[''] after:absolute after:-right-16 after:top-1/2 after:-translate-y-1/2 after:w-24 after:h-1 after:bg-gradient-to-r after:from-yellow-400 after:to-transparent md:after:w-40">
               {settings.groomName}
             </h1>
 
-            <span className="font-script gold-text text-9xl md:text-[12rem] drop-shadow-2xl scale-110 md:scale-125">&</span>
+            <span className="font-script text-yellow-400 md:gold-text text-9xl md:text-[12rem] drop-shadow-2xl scale-110 md:scale-125">
+              &
+            </span>
 
-            <h1 className="font-script gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative before:content-[''] before:absolute before:-left-16 before:top-1/2 before:-translate-y-1/2 before:w-24 before:h-1 before:bg-gradient-to-l before:from-yellow-400 before:to-transparent md:before:w-40">
+            <h1 className="font-script text-yellow-200 md:gold-text text-7xl md:text-9xl lg:text-[10rem] drop-shadow-lg relative before:content-[''] before:absolute before:-left-16 before:top-1/2 before:-translate-y-1/2 before:w-24 before:h-1 before:bg-gradient-to-l before:from-yellow-400 before:to-transparent md:before:w-40">
               {settings.brideName}
             </h1>
+          </motion.div> */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 1 }}
+            className="flex items-center justify-center my-10 md:my-16 gap-6 md:gap-16 flex-wrap"
+          >
+            <h1
+              className="font-script text-6xl md:text-9xl lg:text-[10rem]"
+              style={{
+                background:
+                  "linear-gradient(90deg, #d10808, #d10808, #FFB800, #fff700, #FFB800, #d10808)",
+                backgroundSize: "200% auto",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                WebkitTextStroke: "1px rgba(60,30,10,0.6)", // dark outline for contrast
+                textShadow: "0 0 30px rgba(255,215,0,0.9)", // strong glow
+                animation: "shine 4s linear infinite",
+              }}
+            >
+              {settings.groomName}
+            </h1>
+
+            <span
+              className="font-script text-8xl md:text-[12rem]"
+              style={{
+                background:
+                  "linear-gradient(90deg, #d10808, #d10808, #FFB800, #fff700, #FFB800, #d10808)",
+                backgroundSize: "200% auto",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                WebkitTextStroke: "1px rgba(60,30,10,0.6)",
+                textShadow: "0 0 35px rgba(255,215,0,1)",
+                animation: "shine 4s linear infinite",
+              }}
+            >
+              &
+            </span>
+
+            <h1
+              className="font-script text-6xl md:text-9xl lg:text-[10rem]"
+              style={{
+                background:
+                  "linear-gradient(90deg, #d10808, #d10808, #FFB800, #fff700, #FFB800, #d10808)",
+                backgroundSize: "200% auto",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                WebkitTextStroke: "1px rgba(60,30,10,0.6)",
+                textShadow: "0 0 30px rgba(255,215,0,0.9)",
+                animation: "shine 4s linear infinite",
+              }}
+            >
+              {settings.brideName}
+            </h1>
+
+            <style>
+              {`
+      @keyframes shine {
+        0% { background-position: 0% center; }
+        100% { background-position: 200% center; }
+      }
+    `}
+            </style>
           </motion.div>
 
           <motion.div
