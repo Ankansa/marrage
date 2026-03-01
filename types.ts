@@ -49,6 +49,8 @@ export interface FamilyMember {
   relation: string;
   side: 'Bride' | 'Groom';
   photo?: string;
+  facebook?: string;
+  instagram?: string;
 }
 
 export interface WeddingSettings {

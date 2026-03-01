@@ -549,6 +549,12 @@ const PublicInvite: React.FC = () => {
                   <motion.div whileHover={{ y: -12 }} key={i} className="flex flex-col items-center text-center">
                     <div className="w-36 h-36 rounded-full border-4 border-amber-300 p-1 mb-8 shadow-2xl bg-white overflow-hidden ring-8 ring-amber-50">
                       <img src={member.photo} className="w-full h-full object-cover rounded-full" alt={member.name} />
+                      {/* redirect facebook on click on image */}
+                      {member.facebook && (
+                        <a href={member.facebook} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 transition-opacity">
+                          <span className="text-white text-sm">{member.name}</span>
+                        </a>
+                      )}
                     </div>
                     <h5 className="font-bold  text-xl text-gray-200 leading-tight">{member.name}</h5>
                     <p className="text-[12px] text-amber-700 font-bold uppercase tracking-widest mt-3 px-3 py-1 bg-amber-50 rounded-full">{member.relation}</p>
@@ -575,6 +581,12 @@ const PublicInvite: React.FC = () => {
                   <motion.div whileHover={{ y: -12 }} key={i} className="flex flex-col items-center text-center">
                     <div className="w-36 h-36 rounded-full border-4 border-pink-300 p-1 mb-8 shadow-2xl bg-white overflow-hidden ring-8 ring-pink-50">
                       <img src={member.photo} className="w-full h-full object-cover rounded-full" alt={member.name} />
+                      {/* redirect facebook on click on image */}
+                      {member.facebook && (
+                        <a href={member.facebook} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 transition-opacity">
+                          <span className="text-white text-sm">{member.name}</span>
+                        </a>
+                      )}
                     </div>
                     <h5 className="font-bold text-gray-200 text-xl leading-tight">{member.name}</h5>
                     <p className="text-[12px] text-pink-700 font-bold uppercase tracking-widest mt-3 px-3 py-1 bg-pink-50 rounded-full">{member.relation}</p>

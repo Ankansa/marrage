@@ -82,19 +82,30 @@ export const useStore = create<AppState>((set, get) => ({
     ],
     familyMembers: [
       { name: 'Late Nirad Baran Sarkar', relation: 'Grandfather (Groom)', side: 'Groom', photo: 'https://eu.ui-avatars.com/api/?name=Nirad+Baran+Sarkar&size=250' },
-      { name: 'Krishnapada Sarkar', relation: 'Father of Groom', side: 'Groom', photo: kp_photo },
+      {
+        name: 'Krishnapada Sarkar',
+        relation: 'Father of Groom',
+        side: 'Groom',
+        photo: kp_photo,
+        facebook: 'https://www.facebook.com/share/16curZ6LsQ/',
+        instagram: 'https://www.instagram.com/krishnapada_sarkar/'
+      },
       { name: 'Late Rinku Sarkar', relation: 'Mother of Groom', side: 'Groom', photo: rinku_photo },
       {
         name: 'Manisha Sarkar',
         relation: 'Sister of Groom',
         side: 'Groom',
-        photo: riya_photo
+        photo: riya_photo,
+        facebook: 'https://www.facebook.com/share/186wFQv1BH/',
+        instagram: 'https://www.instagram.com/riya_sarkar/'
       },
       {
         name: 'Moumita Sarkar',
         relation: 'Sister of Groom',
         side: 'Groom',
-        photo: rini_photo
+        photo: rini_photo,
+        facebook: 'https://www.facebook.com/share/1U83qzZqKD/',
+        instagram: 'https://www.instagram.com/moumita_sarkar/'
       },
       { name: 'Late Sitanshu Sekhar Sarkar', relation: 'Grandfather (Bride)', side: 'Bride', photo: 'https://eu.ui-avatars.com/api/?name=Sashank+Sekhar+Sarkar&size=250' },
       { name: 'Late Nirmal Sarkar', relation: 'Father of Bride', side: 'Bride', photo: nirmal_photo },
@@ -103,7 +114,9 @@ export const useStore = create<AppState>((set, get) => ({
         name: 'Shibdas Sarkar',
         relation: 'Brother of Bride',
         side: 'Bride',
-        photo: sibu_photo
+        photo: sibu_photo,
+        facebook: 'https://www.facebook.com/share/1AaqkECGzp/',
+        instagram: 'https://www.instagram.com/shibdas_sarkar/'
       }
     ],
     addresses: {
