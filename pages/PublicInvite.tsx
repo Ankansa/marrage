@@ -237,15 +237,18 @@ const PublicInvite: React.FC = () => {
       </motion.button> */}
 
       {/* Hero Section */}
-      <section className="relative h-screen overflow-hidden flex items-center justify-center">
+      <section className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
 
         <motion.div style={{ scale: heroScale, opacity: heroOpacity }} className="absolute inset-0 z-0">
           <img
             src={background_photo} // ← Replace with better hosted Bengali bride + palki image
             alt="Bride in traditional palki illustration" className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/90" />
         </motion.div>
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-[600px] h-[600px] bg-yellow-500/10 blur-[120px] rounded-full" />
+        </div>
         {/* Floating Background Alponas */}
         <div className="fixed inset-0 pointer-events-none z-0 opacity-10">
           <motion.img
@@ -309,6 +312,7 @@ const PublicInvite: React.FC = () => {
           </motion.div> */}
 
           <motion.div
+            perspective="800px"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 1 }}
@@ -318,13 +322,17 @@ const PublicInvite: React.FC = () => {
               className="font-script text-6xl md:text-9xl lg:text-[10rem]"
               style={{
                 background:
-                  "linear-gradient(90deg, #d10808, #d10808, #FFB800, #fff700, #FFB800, #d10808)",
+                  "linear-gradient(90deg,  #dc1818, #dc1818, #FFD700, #FFD700, #fa0c0c)",
                 backgroundSize: "200% auto",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                WebkitTextStroke: "1px rgba(60,30,10,0.6)", // dark outline for contrast
-                textShadow: "0 0 30px rgba(255,215,0,0.9)", // strong glow
-                animation: "shine 4s linear infinite",
+                WebkitTextStroke: "1px rgba(255, 179, 0, 0.9)",   // darker outline
+                textShadow: `
+      0 0 15px rgba(255,215,0,0.8),
+      0 0 30px rgba(255,165,0,0.6),
+      0 4px 20px rgba(0,0,0,0.8)
+    `,
+                animation: "shine 3s linear infinite",
               }}
             >
               {settings.groomName}
@@ -338,38 +346,56 @@ const PublicInvite: React.FC = () => {
                 backgroundSize: "200% auto",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                WebkitTextStroke: "1px rgba(60,30,10,0.6)",
+                WebkitTextStroke: "1px rgba(255, 179, 0, 0.9)",
                 textShadow: "0 0 35px rgba(255,215,0,1)",
-                animation: "shine 4s linear infinite",
+                transformOrigin: "top center", // hangs from top
+                display: "inline-block",
+                animation:
+                  "shine 3s linear infinite, pendulum3D 4s ease-in-out infinite",
               }}
             >
-              &
+              ❤️
             </span>
 
             <h1
               className="font-script text-6xl md:text-9xl lg:text-[10rem]"
               style={{
                 background:
-                  "linear-gradient(90deg, #d10808, #d10808, #FFB800, #fff700, #FFB800, #d10808)",
+                  "linear-gradient(90deg, #dc1818, #dc1818, #FFD700, #FFD700, #fa0c0c)",
                 backgroundSize: "200% auto",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                WebkitTextStroke: "1px rgba(60,30,10,0.6)",
-                textShadow: "0 0 30px rgba(255,215,0,0.9)",
-                animation: "shine 4s linear infinite",
+                WebkitTextStroke: "1px rgba(255, 179, 0, 0.9)",   // darker outline
+                textShadow: `
+      0 0 15px rgba(255,215,0,0.8),
+      0 0 30px rgba(255,165,0,0.6),
+      0 4px 20px rgba(0,0,0,0.8)
+    `,
+                animation: "shine 3s linear infinite",
               }}
             >
               {settings.brideName}
             </h1>
 
-            <style>
-              {`
-      @keyframes shine {
-        0% { background-position: 0% center; }
-        100% { background-position: 200% center; }
-      }
-    `}
-            </style>
+            <style jsx>{`
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes pendulum3D {
+    0% {
+      transform: rotateY(-50deg) rotateZ(-90deg);
+    }
+    50% {
+      transform: rotateY(50deg) rotateZ(90deg);
+    }
+    100% {
+      transform: rotateY(-50deg) rotateZ(-90deg);
+    }
+  }
+`}</style>
           </motion.div>
 
           <motion.div
@@ -415,7 +441,7 @@ const PublicInvite: React.FC = () => {
             src={background_photo5} // ← Replace with better hosted Bengali bride + palki image
             alt="Bride in traditional palki illustration" className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/90" />
         </motion.div>
         {/* Soft Decorative Background */}
         <div className="absolute inset-0 opacity-5 pointer-events-none">
@@ -799,10 +825,22 @@ const PublicInvite: React.FC = () => {
               className="absolute inset-0 bg-black/90 backdrop-blur-xl"
             />
             <motion.div
-              initial={{ opacity: 0, y: 100, scale: 0.9 }}
+              initial={{ opacity: 0, y: 100, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 100, scale: 0.9 }}
-              className="relative w-full max-w-2xl bg-white rounded-t-[4rem] md:rounded-[4rem] p-12 shadow-2xl overflow-hidden border-t-8 border-red-700"
+              exit={{ opacity: 0, y: 100, scale: 0.95 }}
+              transition={{ duration: 0.4 }}
+              className="
+    relative 
+    w-full 
+    max-w-2xl 
+    bg-white 
+    rounded-t-[3rem] md:rounded-[4rem] 
+    p-6 md:p-12
+    shadow-2xl 
+    border-t-8 border-red-700
+    max-h-[90vh] 
+    overflow-y-auto
+  "
             >
               <img src="https://cdn-icons-png.flaticon.com/512/10452/10452601.png" className="absolute -top-10 -right-10 w-64 h-64 opacity-5 grayscale animate-spin" />
 
