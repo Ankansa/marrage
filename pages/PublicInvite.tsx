@@ -755,15 +755,7 @@ const PublicInvite: React.FC = () => {
         </div>
       </section>
 
-      {/* RSVP Sections */}
-      <div className="fixed bottom-8 inset-x-0 px-8 z-[100] md:hidden">
-        <button
-          onClick={() => setShowRsvp(true)}
-          className="w-full crimson-gradient text-white py-6 rounded-3xl font-bold text-xl shadow-2xl shadow-red-900/40 active:scale-95 transition-transform border-t border-white/20"
-        >
-          I'll Be There!
-        </button>
-      </div>
+      
 
       <section className="py-48 px-6 text-center relative z-10 overflow-hidden bg-white">
         <div className="absolute inset-0 alpona-bg pointer-events-none" />
@@ -921,6 +913,16 @@ const PublicInvite: React.FC = () => {
         <div className="font-script text-3xl text-red-700 mb-4 tracking-widest">Ankan & Samapika</div>
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.4em]">Designing Our Tomorrow • {new Date(settings.date).getFullYear()}</p>
       </footer>
+
+      {/* RSVP Sections */}
+      <div className="bottom-8 inset-x-0 px-8 z-[100] md:hidden">
+        <button
+          onClick={() => setShowRsvp(true)}
+          className="w-full crimson-gradient text-white py-6 rounded-3xl font-bold text-xl shadow-2xl shadow-red-900/40 active:scale-95 transition-transform border-t border-white/20"
+        >
+          I'll Be There!
+        </button>
+      </div>
     </div>
   );
 };
