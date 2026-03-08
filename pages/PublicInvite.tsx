@@ -13,6 +13,7 @@ import kone_mukut from '../src/kone_mukut.png'; // ← Replace with better hoste
 import background_photo5 from '../src/background5.png'; // ← Replace with better hosted Bengali bride + palki image
 import background_photo6 from '../src/background6.jpg'; // ← Replace with better hosted Bengali bride + palki image
 import groupdance_photo from '../src/groupdance.png'
+import { s } from 'framer-motion/client';
 
 const PublicInvite: React.FC = () => {
   const { slug } = useParams();
@@ -199,6 +200,31 @@ const PublicInvite: React.FC = () => {
     size: Math.random() > 0.5 ? '20px' : '12px',
     color: Math.random() > 0.5 ? '#f59e0b' : '#ef4444' // Marigold or Rose
   }));
+
+
+  // ────────────────────────────────────────────────
+  // Improved Google Calendar link with venue
+  // ────────────────────────────────────────────────
+  const RevenueAddress = settings.addresses.groomMapUrl || "Sarkar Bari, Hamirhati, Sonamukhi, Bankura , West Bengal, India";
+  const VenueName = settings.venue || "Sarkar Bari Hamirhati";
+  const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+    `&text=Ankan%20%26%20Samapika%20Wedding%20%E2%9D%A4%EF%B8%8F` +
+    `&dates=20260503T133000/20260503T173000` +           // 7:00 PM – 11:00 PM IST (UTC 13:30–17:30)
+    `&ctz=Asia/Kolkata` +
+    `&details=Shubho%20Bibaho%20-%20Sacred%20Union%0A` +
+    `Date%3A%20May%203,%202026%20%407:00%20PM%20onwards%0A` +
+    `Preeti%20Bhoj%20(Reception)%3A%20May%205,%202026%0A` +
+    `Venue%3A%20${encodeURIComponent(VenueName)}%0A` +
+    `Your%20presence%20will%20make%20our%20day%20special!%20%F0%9F%8C%B8%0A` +
+    `RSVP%20via%20the%20wedding%20site` +
+    `&location=${encodeURIComponent(RevenueAddress)}`;
+
+  const whatsappMessage = `Hi Ankan & Samapika! 🌸\n` +
+    `Wishing you both a beautiful journey ahead. ❤️\n` +
+    `Excited for the wedding on 3rd May 2026!\n` +
+    `Can't wait to celebrate with you! 🎉\n\n`
+    + `- [Your Name]`; // ← Guests can replace with their name before sending
+  const whatsappLink = `https://wa.me/${settings.whatsappNumber || '918250255103'}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
 
@@ -755,7 +781,7 @@ const PublicInvite: React.FC = () => {
         </div>
       </section>
 
-      
+
 
       <section className="py-48 px-6 text-center relative z-10 overflow-hidden bg-white">
         <div className="absolute inset-0 alpona-bg pointer-events-none" />
@@ -914,6 +940,112 @@ const PublicInvite: React.FC = () => {
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.4em]">Designing Our Tomorrow • {new Date(settings.date).getFullYear()}</p>
       </footer>
 
+      {/* Floating WhatsApp with improved calendar */}
+      <motion.a
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ delay: 1.5, duration: 0.7, type: "spring", stiffness: 200, damping: 12 }}
+        whileHover={{ scale: 1.15, rotate: 6 }}
+        whileTap={{ scale: 0.92 }}
+        className="fixed bottom-36 right-5 z-[115] md:bottom-40 md:right-8 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-2xl overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #25D366 0%, #20b358 50%, #128C7E 100%)',
+          boxShadow: '0 10px 30px rgba(37, 211, 102, 0.45)',
+        }}
+      >
+        <div className="absolute inset-0 rounded-full bg-green-200/100 animate-ping-slow" style={{ animationDuration: '2.5s' }} />
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+          alt="WhatsApp"
+          className="w-9 h-9 md:w-11 md:h-11 drop-shadow-lg"
+        />
+      </motion.a>
+
+
+
+      {/* Floating Add to Calendar Button */}
+
+
+
+
+      <motion.a
+        href={calendarUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ delay: 2.0, duration: 0.7, type: "spring", stiffness: 180, damping: 14 }}
+        whileHover={{ scale: 1.18, rotate: -4 }}
+        whileTap={{ scale: 0.92 }}
+        className="group 
+    fixed bottom-20 right-5 z-[114] md:bottom-24 md:right-28
+    w-14 h-14 md:w-16 md:h-16 
+    rounded-full flex items-center justify-center shadow-2xl
+    overflow-hidden text-white font-medium
+    border-2 border-white/30 backdrop-blur-sm
+  "
+        style={{
+          background: 'linear-gradient(135deg, #e11d48 0%, #c026d3 50%, #7c3aed 100%)',
+          boxShadow: '0 10px 30px rgba(225, 29, 72, 0.4)',
+        }}
+      >
+        <div className="absolute inset-0 rounded-full bg-pink-500/20 animate-ping-slow" style={{ animationDuration: '3s' }} />
+
+
+
+
+
+
+
+
+
+
+        <Calendar size={28} className="z-10" />
+
+        {/* Tooltip – visible on hover, desktop only */}
+        <span className="
+    absolute right-20 top-1/2 -translate-y-1/2 
+    bg-gradient-to-r from-rose-600 to-purple-600 text-white text-sm 
+    px-4 py-2 rounded-xl shadow-lg
+    opacity-0 group-hover:opacity-100 transition-opacity duration-300
+    pointer-events-none whitespace-nowrap hidden md:block
+  ">
+          Add Wedding to Calendar
+        </span>
+      </motion.a>
+
+
+      {/* <motion.a
+        href={calendarUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        initial={{ opacity: 0, scale: 0.5, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ delay: 2.0, duration: 0.7, type: "spring", stiffness: 180, damping: 14 }}
+        whileHover={{ scale: 1.18, rotate: -4 }}
+        whileTap={{ scale: 0.92 }}
+        className="
+    fixed bottom-20 right-5 z-[114] md:bottom-24 md:right-28
+    w-14 h-14 md:w-16 md:h-16 
+    rounded-full flex items-center justify-center shadow-2xl
+    overflow-hidden text-white font-medium
+    border-2 border-white/30 backdrop-blur-sm
+  "
+        style={{
+          background: 'linear-gradient(135deg, #e11d48 0%, #c026d3 50%, #7c3aed 100%)',
+          boxShadow: '0 10px 30px rgba(225, 29, 72, 0.4)',
+        }}
+      >
+        <div className="absolute inset-0 rounded-full bg-pink-500/20 animate-ping-slow" style={{ animationDuration: '3s' }} />
+
+        <div className="flex flex-col items-center justify-center z-10">
+          <Calendar size={24} className="mb-0.5" />
+          <span className="text-[10px] md:text-xs font-bold tracking-wide">Add to Calendar</span>
+        </div>
+      </motion.a> */}
       {/* RSVP Sections */}
       <div className="bottom-8 inset-x-0 px-8 z-[100] md:hidden">
         <button
@@ -924,6 +1056,8 @@ const PublicInvite: React.FC = () => {
         </button>
       </div>
     </div>
+
+
   );
 };
 
